@@ -185,12 +185,7 @@
             dawSubmit.textContent = 'Opening...';
             successMessage.style.display = 'block';
 
-            // Submit to Google Form (no-cors mode, fire and forget)
-            // Form ID: 1FAIpQLSeaB9vAqq40RWI4bxXrnNIerLV6klmycpi0bX9MO1IA63OTYQ
-            // Note: You need to get the actual entry ID from your form's pre-filled link
-            // Go to your form > 3 dots > Get pre-filled link > Select an option > Get link
-            // Look for "entry.XXXXXXXXX" in the URL - that's your entry ID
-            
+            // Submit to Google Form
             const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeaB9vAqq40RWI4bxXrnNIerLV6klmycpi0bX9MO1IA63OTYQ/formResponse';
             
             // Create a hidden form to submit
@@ -199,14 +194,9 @@
             form.action = formUrl;
             form.target = 'hidden_iframe';
             
-            // IMPORTANT: Replace 'entry.XXXXXXXXX' with your actual entry ID
-            // To find it: Edit your form > Click 3 dots menu > "Get pre-filled link" 
-            // > Select any DAW > Click "Get link" > Copy the URL
-            // The URL will contain something like: entry.1234567890=Ableton
-            // Use that entry number below
             const input = document.createElement('input');
             input.type = 'hidden';
-            input.name = 'entry.REPLACE_WITH_YOUR_ENTRY_ID'; // <-- REPLACE THIS
+            input.name = 'entry.366340186';
             input.value = daw;
             form.appendChild(input);
             
