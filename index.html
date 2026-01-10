@@ -39,32 +39,45 @@
             margin: 20px 0;
         }
         
-        /* DAW Selection Styles */
-        .daw-section {
+        /* Survey Section Styles */
+        .survey-section {
             background: #e8f4fc;
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
             border-left: 4px solid #0078d4;
         }
-        .daw-section h3 {
+        .survey-section h3 {
             margin-top: 0;
             color: #0078d4;
         }
-        .daw-select {
+        .survey-row {
+            margin-bottom: 15px;
+        }
+        .survey-row label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        .survey-select {
             padding: 12px 15px;
             font-size: 16px;
-            min-width: 250px;
+            width: 100%;
+            max-width: 300px;
             border: 2px solid #ccc;
             border-radius: 5px;
             background: white;
             cursor: pointer;
         }
-        .daw-select:focus {
+        .survey-select:focus {
             border-color: #0078d4;
             outline: none;
         }
-        .daw-submit {
+        .extender-select {
+            max-width: 150px;
+        }
+        .survey-submit {
             padding: 12px 25px;
             background: #28a745;
             color: white;
@@ -72,12 +85,12 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            margin-left: 10px;
+            margin-top: 10px;
         }
-        .daw-submit:hover {
+        .survey-submit:hover {
             background: #218838;
         }
-        .daw-submit:disabled {
+        .survey-submit:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
@@ -88,13 +101,8 @@
             margin-top: 10px;
         }
         @media (max-width: 600px) {
-            .daw-select {
-                min-width: 100%;
-                margin-bottom: 10px;
-            }
-            .daw-submit {
-                margin-left: 0;
-                width: 100%;
+            .survey-select {
+                max-width: 100%;
             }
         }
     </style>
@@ -111,51 +119,119 @@
             🚀 Get DAWWAY V2 licence
         </a>
         
-        <!-- DAW Selection Section -->
-        <div class="daw-section">
-            <h3>🎵 Which DAW will you use with DAWWAY?</h3>
-            <p>Select your DAW to get directed to setup guides and help us improve support:</p>
-            <select id="dawSelect" class="daw-select">
-                <option value="">-- Select your DAW --</option>
-                <option value="Ableton" data-forum="f5-getting-dawway-working-with-ableton">Ableton</option>
-                <option value="Ardour" data-forum="f25-getting-dawway-working-with-ardour">Ardour</option>
-                <option value="Bitwig" data-forum="f9-getting-dawway-working-with-bitwig">Bitwig</option>
-                <option value="Cakewalk" data-forum="f31-getting-dawway-working-with-cakewalk">Cakewalk</option>
-                <option value="Cubase / Nuendo" data-forum="f13-getting-dawway-working-with-cubase-and-nuendo">Cubase / Nuendo</option>
-                <option value="Digital Performer" data-forum="f26-getting-dawway-working-with-digital-performer">Digital Performer</option>
-                <option value="FL Studio" data-forum="f17-getting-dawway-working-with-fl-studio">FL Studio</option>
-                <option value="Logic" data-forum="f30-getting-dawway-working-with-logic">Logic</option>
-                <option value="Luna" data-forum="f27-getting-dawway-working-with-luna">Luna</option>
-                <option value="Mixcraft" data-forum="">Mixcraft</option>
-                <option value="Reaper" data-forum="f28-getting-dawway-working-with-reaper">Reaper</option>
-                <option value="Reason" data-forum="f29-getting-dawway-working-with-reason">Reason</option>
-                <option value="Studio One" data-forum="f21-getting-dawway-working-with-studio-one">Studio One</option>
-                <option value="Other" data-forum="">Other</option>
-            </select>
-            <button id="dawSubmit" class="daw-submit" onclick="submitDAW()" disabled>Go to Setup Guide →</button>
-            <p id="successMessage" class="success-message">✓ Thanks! Opening your DAW's setup guide...</p>
+        <!-- Survey Section -->
+        <div class="survey-section">
+            <h3>🎵 Quick Setup Survey</h3>
+            <p>Help us improve DAWWAY and get directed to relevant setup guides:</p>
+            
+            <!-- DAW Selection -->
+            <div class="survey-row">
+                <label for="dawSelect">Which DAW are you using?</label>
+                <select id="dawSelect" class="survey-select">
+                    <option value="">-- Select your DAW --</option>
+                    <option value="Ableton" data-forum="f5-getting-dawway-working-with-ableton">Ableton</option>
+                    <option value="Ardour" data-forum="f25-getting-dawway-working-with-ardour">Ardour</option>
+                    <option value="Bitwig" data-forum="f9-getting-dawway-working-with-bitwig">Bitwig</option>
+                    <option value="Cubase / Nuendo" data-forum="f13-getting-dawway-working-with-cubase-and-nuendo">Cubase / Nuendo</option>
+                    <option value="Logic" data-forum="f30-getting-dawway-working-with-logic">Logic</option>
+                    <option value="Luna" data-forum="f27-getting-dawway-working-with-luna">Luna</option>
+                    <option value="FL Studio" data-forum="f17-getting-dawway-working-with-fl-studio">FL Studio</option>
+                    <option value="Mixcraft" data-forum="">Mixcraft</option>
+                    <option value="Reaper" data-forum="f28-getting-dawway-working-with-reaper">Reaper</option>
+                    <option value="Reason" data-forum="f29-getting-dawway-working-with-reason">Reason</option>
+                    <option value="Studio One" data-forum="f21-getting-dawway-working-with-studio-one">Studio One</option>
+                    <option value="Other" data-forum="">Other</option>
+                </select>
+            </div>
+            
+            <!-- Control Surface Selection -->
+            <div class="survey-row">
+                <label for="surfaceSelect">Which Control Surface are you using?</label>
+                <select id="surfaceSelect" class="survey-select">
+                    <option value="">-- Select your Control Surface --</option>
+                    <option value="AVID - Artist Mix">AVID - Artist Mix</option>
+                    <option value="AVID - Artist Control">AVID - Artist Control</option>
+                    <option value="Behringer - BCF2000">Behringer - BCF2000</option>
+                    <option value="Behringer - X-TOUCH">Behringer - X-TOUCH</option>
+                    <option value="Behringer - X-TOUCH COMPACT">Behringer - X-TOUCH COMPACT</option>
+                    <option value="Behringer - X-TOUCH MINI">Behringer - X-TOUCH MINI</option>
+                    <option value="Behringer - X-TOUCH ONE">Behringer - X-TOUCH ONE</option>
+                    <option value="Behringer - Wing">Behringer - Wing</option>
+                    <option value="Emagic - Logic Control">Emagic - Logic Control</option>
+                    <option value="Euphonix - MC Mix">Euphonix - MC Mix</option>
+                    <option value="Euphonix MC Control">Euphonix MC Control</option>
+                    <option value="Euphonix - System 5">Euphonix - System 5</option>
+                    <option value="Frontier Design - AlphaTrack">Frontier Design - AlphaTrack</option>
+                    <option value="iCON - Platform M+">iCON - Platform M+</option>
+                    <option value="iCON - Platform X+">iCON - Platform X+</option>
+                    <option value="iCON - QCon Pro">iCON - QCon Pro</option>
+                    <option value="iCON - QCon Pro G2">iCON - QCon Pro G2</option>
+                    <option value="iCON - QCon Pro X">iCON - QCon Pro X</option>
+                    <option value="iCON - QCon Pro XS">iCON - QCon Pro XS</option>
+                    <option value="iCON - P1-Nano">iCON - P1-Nano</option>
+                    <option value="iCON - V1-M">iCON - V1-M</option>
+                    <option value="iCON - V1-X">iCON - V1-X</option>
+                    <option value="Korg - nanoKONTROL2">Korg - nanoKONTROL2</option>
+                    <option value="M-Audio - ProjectMix I/O">M-Audio - ProjectMix I/O</option>
+                    <option value="Mackie d8b (emulation)">Mackie d8b (emulation)</option>
+                    <option value="Mackie - MCU Pro">Mackie - MCU Pro</option>
+                    <option value="Mackie - MCU XT Pro">Mackie - MCU XT Pro</option>
+                    <option value="Mackie - Mackie Control">Mackie - Mackie Control</option>
+                    <option value="Mackie - Mackie Control Universal">Mackie - Mackie Control Universal</option>
+                    <option value="Mackie - Mackie Control Universal Pro">Mackie - Mackie Control Universal Pro</option>
+                    <option value="PreSonus - FaderPort">PreSonus - FaderPort</option>
+                    <option value="PreSonus - FaderPort 8">PreSonus - FaderPort 8</option>
+                    <option value="PreSonus - FaderPort 16">PreSonus - FaderPort 16</option>
+                    <option value="Roland - VS700c">Roland - VS700c</option>
+                    <option value="Solid State Logic - Nucleus">Solid State Logic - Nucleus</option>
+                    <option value="Solid State Logic - Nucleus 2">Solid State Logic - Nucleus 2</option>
+                    <option value="Solid State Logic - UF1">Solid State Logic - UF1</option>
+                    <option value="Solid State Logic - UF8">Solid State Logic - UF8</option>
+                    <option value="Steinberg - CMC">Steinberg - CMC</option>
+                    <option value="Tascam - FW-1082">Tascam - FW-1082</option>
+                    <option value="Tascam - FW-1884">Tascam - FW-1884</option>
+                    <option value="Tascam - US-2400">Tascam - US-2400</option>
+                    <option value="Yamaha - 01X">Yamaha - 01X</option>
+                    <option value="OTHER">OTHER</option>
+                </select>
+            </div>
+            
+            <!-- Extender Count -->
+            <div class="survey-row">
+                <label for="extenderSelect">How many extenders do you have?</label>
+                <select id="extenderSelect" class="survey-select extender-select">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            
+            <button id="surveySubmit" class="survey-submit" onclick="submitSurvey()" disabled>Submit & View Setup Guide →</button>
+            <p id="successMessage" class="success-message">✓ Thanks for your feedback! Opening your setup guide...</p>
         </div>
         
         <div class="requirements">
             <h3>⚠️ Requirements</h3>
             <ul>
-                <li>WMS production release (for in Built port creation)
-                    .. or ...
-                <li>Virtual Midi Ports (One-off setup process to enable DAWWAY to work with Windows 10 and earlier Windows 11 builds)</li>
+                <li>Windows 10 or later (latest Win11 builds for Midi 2.0 related support)</li>
                 <li>.NET 8 Desktop Runtime (auto-installed if needed)</li>
-                <li>Control Surface connected</li>
+                <li>Virtual Midi Ports (loopMidi Recommended)</li>
+                <li>MIDI devices connected</li>
             </ul>
         </div>
         
         <h2>Features</h2>
         <ul>
-            <li>✅ Custom "Tailored" Meter bridge for each control surface / extender</li>
-            <li>✅ Midi 2.0 features "in the wings"</li>
+            <li>✅ Custom Meter bridge for each control surface or extender</li>
+            <li>✅ Midi 2.0 "future release planned at no extra cost"</li>
             <li>✅ Lifetime Licence</li>
             <li>✅ Common Industry standards compatible</li>
             <li>✅ Built-in Themes</li>
             <li>✅ MIDI Routing & Bank Management</li>
-            <li>✅ Automated Updates via Click Once</li>
+            <li>✅ Automatic Updates via Click Once</li>
         </ul>    
     </div>
 
@@ -164,26 +240,32 @@
 
     <script>
         const dawSelect = document.getElementById('dawSelect');
-        const dawSubmit = document.getElementById('dawSubmit');
+        const surfaceSelect = document.getElementById('surfaceSelect');
+        const extenderSelect = document.getElementById('extenderSelect');
+        const surveySubmit = document.getElementById('surveySubmit');
         const successMessage = document.getElementById('successMessage');
 
-        // Enable button when DAW is selected
-        dawSelect.addEventListener('change', function() {
-            dawSubmit.disabled = !this.value;
-        });
+        // Enable submit button when DAW and Control Surface are selected
+        function checkFormValidity() {
+            surveySubmit.disabled = !dawSelect.value || !surfaceSelect.value;
+        }
+        
+        dawSelect.addEventListener('change', checkFormValidity);
+        surfaceSelect.addEventListener('change', checkFormValidity);
 
-        function submitDAW() {
-            const select = document.getElementById('dawSelect');
-            const daw = select.value;
-            const forumPath = select.options[select.selectedIndex].dataset.forum;
+        function submitSurvey() {
+            const daw = dawSelect.value;
+            const surface = surfaceSelect.value;
+            const extenders = extenderSelect.value;
+            const forumPath = dawSelect.options[dawSelect.selectedIndex].dataset.forum;
             
-            if (!daw) {
-                alert('Please select a DAW');
+            if (!daw || !surface) {
+                alert('Please select your DAW and Control Surface');
                 return;
             }
 
-            dawSubmit.disabled = true;
-            dawSubmit.textContent = 'Opening...';
+            surveySubmit.disabled = true;
+            surveySubmit.textContent = 'Submitting...';
             successMessage.style.display = 'block';
 
             // Submit to Google Form
@@ -195,11 +277,26 @@
             form.action = formUrl;
             form.target = 'hidden_iframe';
             
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'entry.366340186';
-            input.value = daw;
-            form.appendChild(input);
+            // DAW question - entry.366340186
+            const dawInput = document.createElement('input');
+            dawInput.type = 'hidden';
+            dawInput.name = 'entry.366340186';
+            dawInput.value = daw;
+            form.appendChild(dawInput);
+            
+            // Control Surface question - entry.1512777507
+            const surfaceInput = document.createElement('input');
+            surfaceInput.type = 'hidden';
+            surfaceInput.name = 'entry.1512777507';
+            surfaceInput.value = surface;
+            form.appendChild(surfaceInput);
+            
+            // Extenders question - entry.563773489
+            const extenderInput = document.createElement('input');
+            extenderInput.type = 'hidden';
+            extenderInput.name = 'entry.563773489';
+            extenderInput.value = extenders;
+            form.appendChild(extenderInput);
             
             document.body.appendChild(form);
             form.submit();
@@ -210,7 +307,7 @@
                 if (forumPath) {
                     window.open('https://dawway.forumotion.com/' + forumPath, '_blank');
                 }
-                dawSubmit.textContent = 'Done! ✓';
+                surveySubmit.textContent = 'Done! ✓';
             }, 800);
         }
     </script>
