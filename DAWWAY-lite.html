@@ -190,6 +190,9 @@
     .mini-links{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; color:var(--muted); font-size: 14px; }
     .mini-links a{ text-decoration:none; padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04); }
     .mini-links a:hover{ background: rgba(255,255,255,.08); color:var(--text); }
+
+    .cta.small{ padding:10px 14px; font-size:14px; border-radius:12px; }
+    .support-row{ display:none; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
   </style>
 </head>
 
@@ -320,6 +323,9 @@
         </div>
 
         <div id="successMessage" class="ok">✓ Download enabled.</div>
+        <div id="supportRow" class="support-row" aria-label="Support link">
+          <a id="supportLinkBtn" class="cta secondary small" href="https://dawway.forumotion.com/" target="_blank" rel="noopener">Open your support link</a>
+        </div>
         <div class="note">Used only to improve setup guidance and compatibility. No personal data is collected.</div>
 
         <div class="mini-links" aria-label="Quick links">
@@ -342,6 +348,26 @@
     const submitBtn = document.getElementById('surveySubmit');
     const successMessage = document.getElementById('successMessage');
 
+    const supportRow = document.getElementById('supportRow');
+    const supportLinkBtn = document.getElementById('supportLinkBtn');
+
+    function buildSupportLink() {
+      const opt = dawSelect.options[dawSelect.selectedIndex];
+      const forumSlug = opt && opt.dataset ? opt.dataset.forum : '';
+      return forumSlug ? `https://dawway.forumotion.com/${forumSlug}` : 'https://dawway.forumotion.com/';
+    }
+
+    function showSupportLink() {
+      if (!supportRow || !supportLinkBtn) return;
+      const url = buildSupportLink();
+      supportLinkBtn.href = url;
+      // If we have a DAW selected, make it obvious this link is personalised
+      const daw = dawSelect.value || 'your DAW';
+      supportLinkBtn.textContent = `Open support for ${daw}`;
+      supportRow.style.display = 'flex';
+    }
+
+
     let skipMode = false;
 
     function setDownloadEnabled(enabled) {
@@ -356,6 +382,7 @@
     }
 
     dawSelect.addEventListener('change', checkFormValidity);
+    dawSelect.addEventListener('change', () => { if (dawSelect.value) showSupportLink(); });
     surfaceSelect.addEventListener('change', checkFormValidity);
 
     // In case the browser restores form state from cache
@@ -374,6 +401,7 @@
       setDownloadEnabled(true);
       successMessage.style.display = 'block';
       successMessage.textContent = '✓ Download enabled. Click Download to begin.';
+      if (dawSelect.value) showSupportLink();
     }
 
     function submitConfiguration() {
@@ -429,6 +457,7 @@
       // UI feedback (don’t disable permanently — users may want to retry)
       successMessage.style.display = 'block';
       successMessage.textContent = '✓ Configuration submitted. Starting download…';
+      showSupportLink();
 
       startDownload();
     }
