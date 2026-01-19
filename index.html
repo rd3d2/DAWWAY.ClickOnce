@@ -1,499 +1,771 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-GB">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DAWWAY V2 - Download</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAWWAY Lite- Meter Bridge for your Control Surfaces</title>
+  <meta name="description" content="DAWWAY Lite is a second-screen meter bridge for your control surfaces: meters at your eyeline, sized to your surface + extenders, customisable UI, touchscreen-ready." />
+
+  <!-- =========================================================
+       EDIT ONCE: LINKS
+       ========================================================= -->
+  <script>
+    // Change these in one place and the whole page updates.
+    window.DAWWAY = {
+      downloadUrl: "https://rd3d2.github.io/DAWWAY.ClickOnce/index-lite.html",
+      // Optional: add these when you have them
+      docsUrl:     "", // e.g. "https://dawway.co.uk/setup"
+      supportUrl:  "", // e.g. "https://dawway.forumotion.com/"
+      youtubeUrl:  ""  // e.g. "https://www.youtube.com/@dawway"
+    };
+  </script>
+
+  <!-- =========================
+       SOCIAL SHARING (EDIT IF NEEDED)
+       Tip: og:url should be THIS landing page URL.
+       If you host this page in the same repo as your ClickOnce site, you can leave it as-is.
+       ========================= -->
+  <meta property="og:title" content="DAWWAY Lite- Meter Bridge for your Control Surfaces" />
+  <meta property="og:description" content="Meters at your eyeline. Sized to your surface + extenders. Customisable UI. Touchscreen-ready." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rd3d2.github.io/DAWWAY.ClickOnce/" />
+  <meta property="og:image" content="https://rd3d2.github.io/DAWWAY.ClickOnce/Package Shot 2 Lite.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DAWWAY Lite- Meter Bridge" />
+  <meta name="twitter:description" content="Meters at your eyeline for your control surfaces." />
+  <meta name="twitter:image" content="https://rd3d2.github.io/DAWWAY.ClickOnce/Package Shot 2 Lite.png" />
+
   <style>
     :root{
-      --bg:#f5f5f5;
-      --card:#ffffff;
-      --text:#222;
-      --muted:#555;
-      --primary:#0078d4;
-      --primaryHover:#005a9e;
-      --success:#28a745;
-      --successHover:#218838;
-      --warningBg:#fff4ce;
-      --warningBorder:#f0ad4e;
-      --infoBg:#e8f4fc;
-      --infoBorder:#0078d4;
-      --border:#ddd;
-      --disabled:#9aa7b2;
-      --shadow:0 2px 10px rgba(0,0,0,0.10);
+      --bg: #07070a;
+      --bg2:#0d0e13;
+      --muted:#a7afc2;
+      --text:#eef1ff;
+      --gold:#d8b15b;
+      --gold2:#f6dd9b;
+      --line: rgba(255,255,255,.10);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
     }
-
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 20px;
-      background: var(--bg);
-      color: var(--text);
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 520px at 50% -10%, rgba(216,177,91,.20), transparent 60%),
+        radial-gradient(900px 420px at 10% 10%, rgba(68, 188, 255, .08), transparent 60%),
+        radial-gradient(900px 420px at 90% 20%, rgba(112, 255, 186, .06), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      line-height:1.45;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:rgba(7,7,10,.65);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      max-width:var(--max); margin:0 auto; padding:12px 24px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none;
+      font-weight:800; letter-spacing:.3px;
+    }
+    .badge{
+      font-size:12px; padding:4px 10px; border-radius:999px;
+      border:1px solid rgba(216,177,91,.40);
+      background:rgba(216,177,91,.08);
+      color:var(--gold2);
+    }
+    .nav-links{
+      display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end;
+      font-size:14px; color:var(--muted);
+    }
+    .nav-links a{ text-decoration:none; padding:8px 10px; border-radius:10px }
+    .nav-links a:hover{ background:rgba(255,255,255,.06); color:var(--text) }
+    .cta{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px; text-decoration:none;
+      padding:12px 16px; border-radius:14px;
+      border:1px solid rgba(216,177,91,.55);
+      background:linear-gradient(180deg, rgba(216,177,91,.22), rgba(216,177,91,.10));
+      box-shadow: 0 10px 30px rgba(216,177,91,.12);
+      font-weight:700;
+    }
+    .cta:hover{ transform: translateY(-1px); transition:.15s ease }
+    .cta.secondary{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      box-shadow:none;
+      font-weight:600;
+      color:var(--text);
     }
 
-    .container{
-      background: var(--card);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-    }
-
-    h1{ margin: 0 0 5px; }
-    .subhead{ margin: 0 0 20px; color: var(--muted); }
-
-    .steps{
-      background: #f7fbff;
-      border: 1px solid #cfe8ff;
-      border-radius: 10px;
-      padding: 16px 18px;
-      margin: 18px 0 22px;
-    }
-    .steps strong{ display:block; margin-bottom:8px; }
-    .steps ol{ margin: 0 0 0 18px; padding: 0; }
-    .steps li{ margin: 6px 0; }
-
-    .btn-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin: 18px 0 10px;
-    }
-
-    .download-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding: 14px 20px;
-      background: var(--primary);
-      color: #fff;
-      text-decoration:none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      border: 0;
-      cursor: pointer;
-      user-select:none;
-    }
-    .download-btn:hover{ background: var(--primaryHover); }
-
-    .download-btn.secondary{
-      background: #111827;
-    }
-    .download-btn.secondary:hover{
-      background: #0b1220;
-    }
-
-    /* Disabled "Install" button style */
-    .download-btn.disabled,
-    .download-btn:disabled{
-      background: var(--disabled);
-      cursor:not-allowed;
-      opacity:0.85;
-      pointer-events:none;
-    }
-
-    /* Survey section */
-    .survey-section{
-      background: var(--infoBg);
-      padding: 22px;
-      border-radius: 10px;
-      margin: 20px 0;
-      border-left: 5px solid var(--infoBorder);
-    }
-    .survey-section h2{
-      margin: 0 0 6px;
-      color: var(--primary);
-      font-size: 20px;
-    }
-    .survey-section p{ margin: 8px 0; color: var(--muted); }
-
-    .survey-grid{
+    .hero{ padding:34px 0 18px }
+    .hero-grid{
       display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    .survey-row label{
-      display:block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .survey-select{
-      padding: 12px 14px;
-      font-size: 16px;
-      width: 100%;
-      max-width: 360px;
-      border: 2px solid #c9c9c9;
-      border-radius: 8px;
-      background: #fff;
-      cursor:pointer;
-    }
-    .survey-select:focus{
-      border-color: var(--primary);
-      outline:none;
-    }
-
-    .survey-actions{
-      display:flex;
-      flex-wrap:wrap;
+      grid-template-columns: 1.2fr .8fr;
+      gap:26px;
       align-items:center;
-      gap:12px;
-      margin-top: 12px;
+    }
+    @media (max-width: 900px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .nav-inner{ align-items:flex-start; }
+    }
+    .kicker{
+      color:var(--gold2);
+      font-weight:800; letter-spacing:.12em;
+      text-transform:uppercase; font-size:12px;
+    }
+    h1{
+      margin:.35rem 0 .6rem;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height:1.05;
+      letter-spacing:-.02em;
+    }
+    .sub{
+      font-size: clamp(16px, 1.6vw, 19px);
+      color:var(--muted);
+      margin:0 0 18px;
+    }
+    .hero-actions{ display:flex; gap:12px; flex-wrap:wrap; margin:18px 0 18px }
+    .bullets{
+      display:grid; gap:10px;
+      margin:18px 0 0;
+      color:var(--muted);
+    }
+    .bullets b{ color:var(--text) }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:var(--radius2);
+      box-shadow:var(--shadow);
+    }
+    .hero-art{
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-art .img{
+      width:100%;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.12);
+      display:block;
+      background:#000;
+    }
+    .hero-art .glow{
+      position:absolute; inset:-30%;
+      background: radial-gradient(circle at 70% 30%, rgba(216,177,91,.35), transparent 55%),
+                  radial-gradient(circle at 30% 70%, rgba(80, 220, 160,.12), transparent 55%);
+      filter: blur(24px);
+      pointer-events:none;
+      opacity:.8;
+    }
+    .hero-art .caption{
+      margin:12px 0 0;
+      color:var(--muted);
+      font-size:13px;
     }
 
-    .survey-submit{
-      padding: 12px 18px;
-      background: var(--success);
-      color:#fff;
-      border:none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor:pointer;
+    .meter-strip{
+      margin:18px 0 0;
+      height:14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(90deg,
+          rgba(90,255,160,.90) 0%,
+          rgba(90,255,160,.90) 55%,
+          rgba(255,220,80,.92) 70%,
+          rgba(255,90,90,.92) 100%);
+      position:relative;
+      overflow:hidden;
     }
-    .survey-submit:hover{ background: var(--successHover); }
-    .survey-submit:disabled{
-      background: #b9c3bb;
-      cursor:not-allowed;
+    .meter-strip:after{
+      content:"";
+      position:absolute; inset:0;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(0,0,0,.0) 0px,
+        rgba(0,0,0,.0) 8px,
+        rgba(0,0,0,.55) 9px,
+        rgba(0,0,0,.55) 10px
+      );
+      opacity:.35;
     }
 
-    .skip-link{
-      font-size: 14px;
-      color: var(--primary);
-      text-decoration: underline;
-      cursor:pointer;
-      background: transparent;
-      border: 0;
+    section{ padding:26px 0 }
+    .section-title{
+      display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+      margin:0 0 14px;
+    }
+    h2{
+      margin:0;
+      font-size: clamp(22px, 2.5vw, 30px);
+      letter-spacing:-.01em;
+    }
+    .hint{ color:var(--muted); font-size:14px; max-width:58ch }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 900px){ .grid-3{ grid-template-columns: 1fr; } }
+
+    .feature{
+      padding:16px;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .feature h3{ margin:0 0 6px; font-size:16px }
+    .feature p{ margin:0; color:var(--muted); font-size:14px }
+
+    .how{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 900px){ .how{ grid-template-columns: 1fr; } }
+    .steps{ padding:16px }
+    .steps ol{ margin:10px 0 0; padding-left:18px; color:var(--muted) }
+    .steps li{ margin:10px 0 }
+    .steps b{ color:var(--text) }
+    .image-slot{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .slot{
+      border-radius:16px;
+      border:1px dashed rgba(255,255,255,.22);
+      background:rgba(255,255,255,.03);
+      padding:14px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .slot img{ width:100%; border-radius:14px; border:1px solid rgba(255,255,255,.10); display:block; }
+    .slot small{ display:block; margin-top:8px; color:rgba(167,175,194,.85) }
+
+    /* --- Studio hover preview --- */
+    .studio-preview{ margin: 14px 0 18px; }
+    .studio-preview__frame{
+      width: 100%;
+      border-radius: 18px;
       padding: 0;
+      overflow: hidden;
+      border: 1px dashed rgba(255,255,255,.22);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
-
-    .privacy-note{
-      margin-top: 10px;
-      font-size: 13px;
-      color:#667085;
+    .studio-preview__frame img{
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 0;
+      border-radius: 0;
+      background: #000;
     }
+    .studio-preview__caption{ margin-top: 10px; opacity: .9; }
 
-    .success-message{
-      display:none;
-      color: var(--success);
-      font-weight: 700;
-      margin-top: 10px;
+    /* Make thumbnails feel interactive */
+    .grid-3 .slot img{ cursor: pointer; outline: none; }
+    .grid-3 .slot img:focus{ box-shadow: 0 0 0 2px rgba(255,255,255,.25); border-radius: 12px; }
+
+
+    .table-wrap{
+      overflow:auto;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
     }
+    table{ width:100%; border-collapse:collapse; min-width:720px; }
+    th,td{ padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.08); }
+    th{ text-align:left; color:var(--muted); font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.08em; }
+    td{ font-size:14px }
+    td.yes{ color:#bfffe0 }
+    td.no{ color:rgba(255,255,255,.45) }
+    td.pro{ color:var(--gold2); font-weight:700 }
+    tr:last-child td{ border-bottom:none }
 
-    .requirements{
-      background: var(--warningBg);
-      padding: 16px 18px;
-      border-left: 5px solid var(--warningBorder);
-      border-radius: 10px;
-      margin: 20px 0;
+    details{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:16px;
+      padding:12px 14px;
     }
-    .requirements h3{ margin:0 0 8px; }
-    .requirements ul{ margin: 0 0 0 18px; padding:0; }
-    .requirements li{ margin: 6px 0; }
+    details + details{ margin-top:10px }
+    summary{ cursor:pointer; font-weight:700 }
+    details p{ margin:10px 0 0; color:var(--muted) }
 
-    h2.section-title{
-      margin-top: 26px;
-      margin-bottom: 8px;
+    footer{
+      border-top:1px solid var(--line);
+      padding:22px 0 40px;
+      color:var(--muted);
+      font-size:13px;
     }
-
-    .small-muted{ color: var(--muted); }
-
-    @media (min-width: 760px){
-      .survey-grid{
-        grid-template-columns: 1fr 1fr;
-      }
-      .survey-row.full{
-        grid-column: 1 / -1;
-      }
+    .footer-grid{
+      display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+      align-items:flex-start;
     }
+    .mini{ opacity:.9; max-width:70ch }
+    .pill-row{ display:flex; gap:10px; flex-wrap:wrap; }
+    .pill{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      text-decoration:none;
+      color:var(--muted);
+    }
+    .pill:hover{ color:var(--text) }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>DAWWAY V2</h1>
-    <p class="subhead">Professional Meter Bridge for Windows</p>
-
-    <div class="steps">
-      <strong>Installation steps</strong>
-      <ol>
-        <li>Complete the installation configuration (30 seconds)</li>
-        <li>Open the correct setup guide for your DAW</li>
-        <li>Install DAWWAY V2</li>
-      </ol>
-      <p class="small-muted" style="margin:10px 0 0;">
-        This reduces common MIDI-routing issues and gets you running faster.
-      </p>
-    </div>
-
-    <!-- CONFIGURATION (formerly "survey") -->
-    <div class="survey-section" id="config">
-      <h2>🛠 Installation Configuration</h2>
-      <p>
-        Tell us your DAW and control surface so we can route you to the correct setup guide and recommended MIDI routing.
-      </p>
-
-      <div class="survey-grid">
-        <!-- DAW Selection -->
-        <div class="survey-row">
-          <label for="dawSelect">Which DAW are you using?</label>
-          <select id="dawSelect" class="survey-select">
-            <option value="">-- Select your DAW --</option>
-            <option value="Ableton" data-forum="f5-getting-dawway-working-with-ableton">Ableton</option>
-            <option value="Ardour" data-forum="f25-getting-dawway-working-with-ardour">Ardour</option>
-            <option value="Bitwig" data-forum="f9-getting-dawway-working-with-bitwig">Bitwig</option>
-            <option value="Cubase / Nuendo" data-forum="f13-getting-dawway-working-with-cubase-and-nuendo">Cubase / Nuendo</option>
-            <option value="Logic" data-forum="f30-getting-dawway-working-with-logic">Logic</option>
-            <option value="Luna" data-forum="f27-getting-dawway-working-with-luna">Luna</option>
-            <option value="FL Studio" data-forum="f17-getting-dawway-working-with-fl-studio">FL Studio</option>
-            <option value="Mixcraft" data-forum="">Mixcraft</option>
-            <option value="Reaper" data-forum="f28-getting-dawway-working-with-reaper">Reaper</option>
-            <option value="Reason" data-forum="f29-getting-dawway-working-with-reason">Reason</option>
-            <option value="Studio One" data-forum="f21-getting-dawway-working-with-studio-one">Studio One</option>
-            <option value="Other" data-forum="">Other</option>
-          </select>
-        </div>
-
-        <!-- Control Surface Selection -->
-        <div class="survey-row">
-          <label for="surfaceSelect">Which Control Surface are you using?</label>
-          <select id="surfaceSelect" class="survey-select">
-            <option value="">-- Select your Control Surface --</option>
-            <option value="AVID - Artist Mix">AVID - Artist Mix</option>
-            <option value="AVID - Artist Control">AVID - Artist Control</option>
-            <option value="Behringer - BCF2000">Behringer - BCF2000</option>
-            <option value="Behringer - X-TOUCH">Behringer - X-TOUCH</option>
-            <option value="Behringer - X-TOUCH COMPACT">Behringer - X-TOUCH COMPACT</option>
-            <option value="Behringer - X-TOUCH MINI">Behringer - X-TOUCH MINI</option>
-            <option value="Behringer - X-TOUCH ONE">Behringer - X-TOUCH ONE</option>
-            <option value="Behringer - Wing">Behringer - Wing</option>
-            <option value="Emagic - Logic Control">Emagic - Logic Control</option>
-            <option value="Euphonix - MC Mix">Euphonix - MC Mix</option>
-            <option value="Euphonix MC Control">Euphonix MC Control</option>
-            <option value="Euphonix - System 5">Euphonix - System 5</option>
-            <option value="Frontier Design - AlphaTrack">Frontier Design - AlphaTrack</option>
-            <option value="iCON - Platform M+">iCON - Platform M+</option>
-            <option value="iCON - Platform X+">iCON - Platform X+</option>
-            <option value="iCON - QCon Pro">iCON - QCon Pro</option>
-            <option value="iCON - QCon Pro G2">iCON - QCon Pro G2</option>
-            <option value="iCON - QCon Pro X">iCON - QCon Pro X</option>
-            <option value="iCON - QCon Pro XS">iCON - QCon Pro XS</option>
-            <option value="iCON - P1-Nano">iCON - P1-Nano</option>
-            <option value="iCON - V1-M">iCON - V1-M</option>
-            <option value="iCON - V1-X">iCON - V1-X</option>
-            <option value="Korg - nanoKONTROL2">Korg - nanoKONTROL2</option>
-            <option value="M-Audio - ProjectMix I/O">M-Audio - ProjectMix I/O</option>
-            <option value="Mackie d8b (emulation)">Mackie d8b (emulation)</option>
-            <option value="Mackie - MCU Pro">Mackie - MCU Pro</option>
-            <option value="Mackie - MCU XT Pro">Mackie - MCU XT Pro</option>
-            <option value="Mackie - Mackie Control">Mackie - Mackie Control</option>
-            <option value="Mackie - Mackie Control Universal">Mackie - Mackie Control Universal</option>
-            <option value="Mackie - Mackie Control Universal Pro">Mackie - Mackie Control Universal Pro</option>
-            <option value="PreSonus - FaderPort">PreSonus - FaderPort</option>
-            <option value="PreSonus - FaderPort 8">PreSonus - FaderPort 8</option>
-            <option value="PreSonus - FaderPort 16">PreSonus - FaderPort 16</option>
-            <option value="Roland - VS700c">Roland - VS700c</option>
-            <option value="Solid State Logic - Nucleus">Solid State Logic - Nucleus</option>
-            <option value="Solid State Logic - Nucleus 2">Solid State Logic - Nucleus 2</option>
-            <option value="Solid State Logic - UF1">Solid State Logic - UF1</option>
-            <option value="Solid State Logic - UF8">Solid State Logic - UF8</option>
-            <option value="Steinberg - CMC">Steinberg - CMC</option>
-            <option value="Tascam - FW-1082">Tascam - FW-1082</option>
-            <option value="Tascam - FW-1884">Tascam - FW-1884</option>
-            <option value="Tascam - US-2400">Tascam - US-2400</option>
-            <option value="Yamaha - 01X">Yamaha - 01X</option>
-            <option value="OTHER">OTHER</option>
-          </select>
-        </div>
-
-        <!-- Extender Count -->
-        <div class="survey-row full">
-          <label for="extenderSelect">How many extenders do you have?</label>
-          <select id="extenderSelect" class="survey-select" style="max-width:160px;">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="survey-actions">
-        <button id="surveySubmit" class="survey-submit" onclick="submitConfiguration()" disabled>
-          Configure &amp; Continue →
-        </button>
-
-        <!-- Optional: allow user to proceed without config (soft-gate, not hard block) -->
-        <button class="skip-link" onclick="skipConfiguration()" type="button">
-          Skip configuration
-        </button>
-      </div>
-
-      <p id="successMessage" class="success-message">✓ Configuration saved. Opening your setup guide…</p>
-      <p class="privacy-note">
-        Used only to improve setup guidance and compatibility. No personal data is collected.
-      </p>
-    </div>
-
-    <!-- INSTALL / LICENSE -->
-    <div class="btn-row">
-      <a
-        id="installBtn"
-        href="https://rd3d2.github.io/DAWWAY.ClickOnce/online/DAWWAY_V2.application"
-        class="download-btn disabled"
-        aria-disabled="true"
-        title="Complete configuration above to enable install"
-      >
-        🚀 Install DAWWAY V2
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top">
+        <span>DAWWAY</span>
+        <span class="badge">Lite</span>
       </a>
 
-      <a
-        href="https://dawway.lemonsqueezy.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="download-btn secondary"
-      >
-        🔑 Get a DAWWAY licence
-      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#compat">Compatibility</a>
+        <a href="#compare">Lite vs Pro</a>
+        <a href="#faq">FAQ</a>
+        <!-- Download now goes straight to your ClickOnce page -->
+        <a class="cta secondary" data-download href="#">Download</a>
+      </div>
     </div>
-
-    <div class="requirements">
-      <h3>⚠️ Requirements</h3>
-      <ul>
-        <li>Windows 10 or later (latest Windows 11 builds recommended)</li>
-        <li>.NET 8 Desktop Runtime (auto-installed if needed)</li>
-        <li>A virtual MIDI loopback driver</li>
-        <li>MIDI devices connected (or virtual ports configured)</li>
-      </ul>
-    </div>
-
-    <h2 class="section-title">DAW Compatibility</h2>
-    <ul>
-      <li>✅ Ableton</li>
-      <li>❌ Ardour (additional testing required)</li>
-      <li>✅ Bitwig</li>
-      <li>✅ Cubase / Nuendo</li>
-      <li>❌ Logic (awaiting tests with RPT Midi)</li>
-      <li>✅ Luna</li>
-      <li>✅ FL Studio</li>
-      <li>✅ Mixcraft</li>
-      <li>✅ Reaper</li>
-      <li>✅ Reason</li>
-      <li>✅ Studio One</li>
-    </ul>
-
-    <h2 class="section-title">Features</h2>
-    <ul>
-      <li>✅ Custom-sized meter bridge for each control surface / extender</li>
-      <li>✅ Lifetime licence</li>
-      <li>✅ MIDI 2.0 compatible</li>
-      <li>✅ Common industry standards compatible</li>
-      <li>✅ MIDI routing &amp; bank management</li>
-      <li>✅ Automatic updates via ClickOnce</li>
-    </ul>
   </div>
 
-  <!-- Hidden iframe for Google Form submission -->
-  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+  <!-- HERO -->
+  <header id="top" class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <div class="kicker">Meter bridge • Control surface workflows • Second screen</div>
+        <h1>Meters at your eyeline<br/>for any control surface setup.</h1>
+        <p class="sub">
+          <b>DAWWAY Lite</b> is a second-screen meter bridge for your control surfaces-
+          sized perfectly to your surface and extenders, fully customisable, and always ready when you are.
+        </p>
+
+        <div class="hero-actions">
+          <a class="cta" data-download href="#">Download DAWWAY Lite</a>
+          <a class="cta secondary" href="#compare">Compare Lite vs Pro</a>
+        </div>
+
+        <div class="bullets">
+          <div>✅ <b>Setup once, launch and go</b> - your layout stays put.</div>
+          <div>✅ <b>Multiple meter sizes + styles</b> - tune it to your workflow.</div>
+          <div>✅ <b>Touchscreen-ready</b>  - built for modern studio layouts.</div>
+        </div>
+
+        <div class="meter-strip" aria-hidden="true"></div>
+      </div>
+
+      <div class="card hero-art">
+        <div class="glow" aria-hidden="true"></div>
+        <img
+          class="img"
+          src="./Package Shot 2 Lite.png"
+          alt="DAWWAY Lite Meter Bridge box art"
+          loading="eager"
+        />
+        <div class="caption">
+          DAWWAY Lite
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <div class="section-title">
+      <h2>Why DAWWAY Lite exists</h2>
+      <div class="hint"><i>"Control Surfaces are brilliant… until the most important visual feedback is small, distant, or hidden."</i></div>
+    </div>
+
+    <div class="grid-3">
+      <div class="feature">
+        <h3>See meters clearly</h3>
+        <p>Put full metering on a display above your surface, so you stop squinting at the DAW mixer.</p>
+      </div>
+      <div class="feature">
+        <h3>Fits your hardware</h3>
+        <p>Sizes perfectly to your control surface and extenders, so it feels “built-in”.</p>
+      </div>
+      <div class="feature">
+        <h3>Uses your screen properly</h3>
+        <p>Make full use of screen real estate: compact overview or big focus meters- your choice.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="wrap">
+    <div class="section-title">
+      <h2>Features in Lite</h2>
+      </div>
+
+    <div class="grid-3">
+      <div class="feature">
+        <h3>Wide compatibility</h3>
+        <p>Designed for a broad range of DAWs and control surfaces.</p>
+      </div>
+      <div class="feature">
+        <h3>Full metering at your eyeline</h3>
+        <p>Bring meters to a dedicated screen above your surface- where your eyes already are.</p>
+      </div>
+      <div class="feature">
+        <h3>Perfect sizing for extenders</h3>
+        <p>Scales to match your surface + extenders for a seamless desk layout.</p>
+      </div>
+
+      <div class="feature">
+        <h3>Multiple meter sizes</h3>
+        <p>Compact overview meters or larger “mix focus” meters- pick what suits the session.</p>
+      </div>
+      <div class="feature">
+        <h3>Different meter styles</h3>
+        <p>Choose the look that matches how you work: clean, bold, minimal, etc.</p>
+      </div>
+      <div class="feature">
+        <h3>Bespoke meter settings</h3>
+        <p>Fine-tune behaviour and appearance to get exactly the feedback you want.</p>
+      </div>
+
+      <div class="feature">
+        <h3>Setup once, launch and go</h3>
+        <p>Configure your layout, then keep it- ready whenever you open the app.</p>
+      </div>
+      <div class="feature">
+        <h3>External monitor flexibility</h3>
+        <p>Run on one external display, ultrawide, or multi-monitor setup.</p>
+      </div>
+      <div class="feature">
+        <h3>Touchscreen support</h3>
+        <p>Native touch-friendly behaviour for modern studio screens.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:14px; color:var(--muted); font-size:14px;">
+      <b style="color:var(--text);">In short:</b> It’s what every DAW and control surface should have built in.
+    </div>
+  </section>
+
+  <section id="how" class="wrap">
+    <div class="section-title">
+      <h2>How it works</h2>
+    </div>
+
+    <div class="how">
+      <div class="card steps">
+        <b>Three steps:</b>
+        <ol>
+          <li><b>Connect DAWWAY</b>  in your DAW.</li>
+          <li><b>Run DAWWAY Lite</b> and choose your surface & extenders.</li>
+          <li><b>Place the windows</b> on any monitor (or touchscreen) at your eyeline.</li>
+        </ol>
+        <p style="margin:12px 0 0; color:var(--muted);">
+          From then on it’s <b style="color:var(--text);">setup once, launch and go</b>.
+        </p>
+      </div>
+
+      <div class="card image-slot">
+        <div class="slot"> PC
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center; padding:22px 10px;">
+            <div class="pill">DAW</div>
+            <div style="opacity:.7;">→</div>
+            <div class="pill">Dawway</div>
+            <div style="opacity:.7;">→</div>
+            <div class="pill">Control Surface</div>
+            <div style="opacity:.7;">→</div>
+            <div class="pill">Display</div>
+          </div>
+
+        </div>
+
+        <div class="slot">
+          <small><b></b> (Add a real desk photo).</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="wrap studio-showcase">
+    <div class="section-title">
+      <h2>Looks great in a real studio</h2>
+    </div>
+    <div style="margin:0 0 14px;">
+    <center><br/>"<i>... and the meters sit exactly above your Control Surface Faders<br/>making for a very natural experience.</i>"</center>
+    </div>
+
+    <!-- Large hover-preview (updates when hovering the images below) -->
+    <div class="studio-preview" aria-label="Studio screenshot preview">
+      <div class="studio-preview__frame">
+        <img
+          id="studioPreviewImg"
+          src="./screenshot-2.png"
+          alt="Preview: FL Studio - DAWWAY - iCON Platform M/X- 16 Tracks. Standard Style Meters"
+          loading="lazy"
+        />
+      </div>
+      <div id="studioPreviewCaption" class="studio-preview__caption">
+        <small><center>FL Studio - DAWWAY - iCON Platform M/X- 16 Tracks.<br/>Standard Style Meters</center></small>
+      </div>
+    </div>
+
+    <div class="grid-3">
+
+      <div class="slot">
+        <img
+          src="./screenshot-2.png"
+          alt="FL Studio - DAWWAY - iCON Platform M/X- 16 Tracks. Standard Style Meters"
+          tabindex="0"
+          data-caption="FL Studio - DAWWAY - iCON Platform M/X- 16 Tracks.<br/>Standard Style Meters"
+        />
+        <small><center>FL Studio - DAWWAY - iCON Platform M/X- 16 Tracks.<br/>Standard Style Meters</center></small>
+      </div>
+
+      <div class="slot">
+        <img
+          src="./screenshot-3.png"
+          alt="BITWIG - DAWWAY - SSL Nucleus 2 - 16 Tracks. Cylindar Style meters"
+          tabindex="0"
+          data-caption="BITWIG - DAWWAY - SSL Nucleus 2 - 16 Tracks.<br/>Cylindar Style meters"
+        />
+        <small><center>BITWIG - DAWWAY - SSL Nucleus 2 - 16 Tracks.<br/>Cylindar Style meters</center></small>
+      </div>
+
+      <div class="slot">
+        <img
+          src="./screenshot-1.png"
+          alt="Mixbus - DAWWAY - Tascam US 2400 - 24 Tracks. Cylindar Style meters"
+          tabindex="0"
+          data-caption="Mixbus - DAWWAY - Tascam US 2400 - 24 Tracks.<br/>Cylindar Style meters"
+        />
+        <small><center>Mixbus - DAWWAY - Tascam US 2400 - 24 Tracks.<br/>Cylindar Style meters</center></small>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section id="compat" class="wrap">
+    <div class="section-title">
+      <h2>Compatibility</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="feature">
+        <h3>DAWs</h3>
+        <p><span style="opacity:.85;"></span>Ableton Live,<br/> BITWIG,<br/>Cubase / Nuendo,<br/>Luna,<br/>FL Studio,<br/>Mixcraft,<br/>Reaper,<br/>Reason,<br/>Studio One.</span></p>
+      </div>
+      <div class="feature">
+        <h3>Control surfaces</h3>
+        <p><span style="opacity:.85;">AVID / EUPHONIX - Artist Mix, Control, Behringer - BCF2000, X-TOUCH, COMPACT, MINI, X-TOUCH ONE, WING, Emagic - Logic Control, Euphonix - System 5, AlphaTrack, iCON - Platform M+, Platform X+, QCon Pro, QCon Pro G2, QCon Pro X,QCon Pro XS,P1-Nano,V1-M, V1-X, Korg - nanoKONTROL2, M-Audio - ProjectMix I/O, Mackie d8b (emulation), MCU Pro, MCU XT Pro,Mackie Control,Control Universal, Control Universal Pro, PreSonus - FaderPort, FaderPort 8/16, Roland - VS700c, Solid State Logic - Nucleus, Nucleus 2, UF1, UF8, Steinberg - CMC, Tascam - FW-1082, FW-1884, US-2400, Yamaha - 01X, </span></p>
+      </div>
+      <div class="feature">
+        <h3>Extenders</h3>
+        <p>Scales to match your extender count and layout for a consistent “hardware width”.</p>
+      </div>
+      
+    </div>
+  </section>
+
+  <section id="compare" class="wrap">
+    <div class="section-title">
+      <h2>Lite vs Pro</h2>
+      <div class="hint">Lite is Meter focused while Pro adds track text, analogue meters, and extended theming *</div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>DAWWAY Lite</th>
+            <th>DAWWAY Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Wide compatibility (common control surface based  workflows)</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td>Meter bridge at your eyeline</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td>Perfect sizing for surface + extenders</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td>Multiple meter sizes</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td>Different meter styles</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td>Bespoke meter settings</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td>Flexible external monitor(s)</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td>Fully customisable UI</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td>Native touchscreen support</td><td class="yes">✅</td><td class="yes">✅</td></tr>
+          <tr><td><b>Track text / track labels</b></td><td class="no">—</td><td class="pro">✅ Pro</td></tr>
+          <tr><td><b>Analogue meters</b></td><td class="no">—</td><td class="pro">✅ Pro</td></tr>
+          <tr><td><b>Theming</b></td><td class="no">—</td><td class="pro">✅ Pro</td></tr>
+          <tr><td><b>DAW Dependent new Functionality</b></td><td class="no">—</td><td class="pro">✅ Pro</td></tr>
+          <tr><td><b>Availability</b></td><td class="pro">Now</td><td class="pro">✅ 3 Months</td></tr>
+            <!--<br/>EG:<br/>...   Long Track Names<br/>... Button based "Jump to Marker"<br/>... Automatic Track Numbering etc</b></td><td class="no">—</td><td class="pro">✅ Pro-->
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;">
+      <a class="cta" data-download href="#">Download Lite</a>
+      <!--<a class="cta secondary" href="#download">Install / help</a>-->
+    </div>
+  </section>
+
+  <section id="faq" class="wrap">
+    <div class="section-title">
+      <h2>FAQ</h2>
+
+    </div>
+
+    <details>
+      <summary>Which DAWs and control surfaces does it support?</summary>
+      <p><br>
+        DAWWAY Lite is designed for wide compatibility across a wide range of DAWs and control surfaces:<br/><br/>
+        <b>DAWS</b><br/> Ableton Live, BITWIG, Cubase / Nuendo, Luna, FL Studio, Mixcraft, Reaper, Reason, Studio One.<br/><br/>
+        <b>CONTROL SURFACES<br/></b> AVID - Artist Mix, AVID - Artist Control, Behringer - BCF2000, Behringer - X-TOUCH, Behringer - X-TOUCH COMPACT, Behringer - X-TOUCH MINI, Behringer - X-TOUCH ONE, Behringer - Wing, Emagic - Logic Control, Euphonix - MC Mix, Euphonix MC Control, Euphonix - System 5, Frontier Design - AlphaTrack, iCON - Platform M+, iCON - Platform X+, iCON - QCon Pro, iCON - QCon Pro G2, iCON - QCon Pro X, iCON - QCon Pro XS, iCON - P1-Nano, iCON - V1-M, iCON - V1-X, Korg - nanoKONTROL2, M-Audio - ProjectMix I/O, Mackie d8b (emulation), Mackie - MCU Pro, Mackie - MCU XT Pro, Mackie - Mackie Control, Mackie - Mackie Control Universal, Mackie - Mackie Control Universal Pro, PreSonus - FaderPort, PreSonus - FaderPort 8, PreSonus - FaderPort 16, Roland - VS700c, Solid State Logic - Nucleus, Solid State Logic - Nucleus 2, Solid State Logic - UF1, Solid State Logic - UF8, Steinberg - CMC, Tascam - FW-1082, Tascam - FW-1884, Tascam - US-2400, Yamaha - 01X
+      </p>
+    </details>
+
+    <details>
+      <summary>Do I need an extra monitor?</summary>
+      <p>No- but it shines with an external display at your eyeline (including touchscreens).</p>
+    </details>
+
+    <details>
+      <summary>Is it difficult to set up?</summary>
+      <p>The goal is “setup once, always there.” Configure it, then launch and go.</p>
+    </details>
+
+    <details>
+      <summary>What do I get with Pro?</summary>
+      <p>Pro adds <b style="color:var(--text);">track text</b>, <b style="color:var(--text);">analogue meters,new sysex specifications (Long Track Names, Buttonised Markers, Automated Track Numbering)</b>, and <b style="color:var(--text);"> extended theming</b>.</p>
+    </details>
+  </section>
+
+  <section id="download" class="wrap">
+    <div class="section-title">
+      <h2>Download</h2>
+  
+    </div>
+
+    <div class="card" style="padding:16px;">
+      <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+        <div style="max-width:70ch;">
+          <div style="font-weight:800; font-size:18px; margin-bottom:6px;">DAWWAY Lite</div>
+          <div style="color:var(--muted);">
+            Click download to install.
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="cta" data-download href="#">Download DAWWAY Lite</a>
+        </div>
+      </div>
+
+      <div style="margin-top:14px; color:var(--muted); font-size:13px;">
+        <b style="color:var(--text);">Next best upgrade:</b> add 2 screenshots (hero + settings). It’ll answer 80% of questions instantly.
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap">     * DAWWAY Pro is due in aproximately three months with a full upgrade path from Lite.<br/>.
+    <div class="footer-grid">
+      <div class="mini"> 
+        <b style="color:var(--text);">DAWWAY Lite</b>- a second-screen meter bridge for your control surfaces.
+        <br/>
+        <span style="opacity:.85;">© <span id="year"></span> DAWWAY. All rights reserved.</span>
+      </div>
+
+      <div class="pill-row">
+        <a class="pill" data-download href="#">Download</a>
+        <a class="pill" href="#compat">Compatibility</a>
+        <a class="pill" href="#compare">Lite vs Pro</a>
+        <a class="pill" data-youtube href="#" aria-disabled="true">YouTube (add later)</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    const dawSelect = document.getElementById('dawSelect');
-    const surfaceSelect = document.getElementById('surfaceSelect');
-    const extenderSelect = document.getElementById('extenderSelect');
-    const submitBtn = document.getElementById('surveySubmit');
-    const successMessage = document.getElementById('successMessage');
-    const installBtn = document.getElementById('installBtn');
+    // Current year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Enable submit button when DAW and Control Surface are selected
-    function checkFormValidity() {
-      submitBtn.disabled = !(dawSelect.value && surfaceSelect.value);
-    }
-
-    dawSelect.addEventListener('change', checkFormValidity);
-    surfaceSelect.addEventListener('change', checkFormValidity);
-
-    function enableInstall() {
-      installBtn.classList.remove('disabled');
-      installBtn.removeAttribute('aria-disabled');
-      installBtn.title = 'Install DAWWAY V2';
-    }
-
-    function skipConfiguration() {
-      // Soft-gate: allow install without config
-      enableInstall();
-      // Optional: scroll user to install buttons
-      installBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    function submitConfiguration() {
-      const daw = dawSelect.value;
-      const surface = surfaceSelect.value;
-      const extenders = extenderSelect.value;
-      const forumPath = dawSelect.options[dawSelect.selectedIndex].dataset.forum;
-
-      if (!daw || !surface) {
-        alert('Please select your DAW and Control Surface');
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Saving...';
-      successMessage.style.display = 'block';
-
-      // Submit to Google Form (same as your original)
-      const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeaB9vAqq40RWI4bxXrnNIerLV6klmycpi0bX9MO1IA63OTYQ/formResponse';
-
-      // Create a hidden form to submit
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = formUrl;
-      form.target = 'hidden_iframe';
-
-      // DAW question - entry.366340186
-      const dawInput = document.createElement('input');
-      dawInput.type = 'hidden';
-      dawInput.name = 'entry.366340186';
-      dawInput.value = daw;
-      form.appendChild(dawInput);
-
-      // Control Surface question - entry.1512777507
-      const surfaceInput = document.createElement('input');
-      surfaceInput.type = 'hidden';
-      surfaceInput.name = 'entry.1512777507';
-      surfaceInput.value = surface;
-      form.appendChild(surfaceInput);
-
-      // Extenders question - entry.563773489
-      const extenderInput = document.createElement('input');
-      extenderInput.type = 'hidden';
-      extenderInput.name = 'entry.563773489';
-      extenderInput.value = extenders;
-      form.appendChild(extenderInput);
-
-      document.body.appendChild(form);
-      form.submit();
-      document.body.removeChild(form);
-
-      // Enable installation once config is saved
-      enableInstall();
-
-      // Redirect to forum guide (if available), then nudge toward install
-      setTimeout(() => {
-        if (forumPath) {
-          window.open('https://dawway.forumotion.com/' + forumPath, '_blank');
+    // Wire up global links
+    const cfg = window.DAWWAY || {};
+    const setHref = (selector, url) => {
+      document.querySelectorAll(selector).forEach(a => {
+        if (!url) {
+          // Leave as-is but visually "disabled" for placeholders
+          a.style.opacity = "0.55";
+          a.style.pointerEvents = "none";
+          a.title = "Link not set yet";
+          return;
         }
-        submitBtn.textContent = 'Saved ✓';
-        // scroll user to install button after guide opens
-        installBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 800);
-    }
+        a.href = url;
+        a.style.opacity = "1";
+        a.style.pointerEvents = "auto";
+        a.removeAttribute("aria-disabled");
+      });
+    };
+
+    setHref("[data-download]", cfg.downloadUrl);
+    setHref("[data-docs]", cfg.docsUrl);
+    setHref("[data-support]", cfg.supportUrl);
+    setHref("[data-youtube]", cfg.youtubeUrl);
+
+    // Optional: smooth scrolling for in-page anchors only
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener("click", (e) => {
+        const id = a.getAttribute("href");
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    // Hover-preview for studio screenshots
+    (function(){
+      const previewImg = document.getElementById("studioPreviewImg");
+      const previewCaption = document.getElementById("studioPreviewCaption");
+      const thumbs = document.querySelectorAll(".studio-showcase .grid-3 .slot img");
+
+      if (!previewImg || !previewCaption || !thumbs.length) return;
+
+      const setPreview = (img) => {
+        const src = img.getAttribute("data-preview") || img.getAttribute("src");
+        const cap = img.getAttribute("data-caption") || "";
+        previewImg.src = src;
+        previewImg.alt = "Preview: " + (img.alt || "Studio screenshot");
+        if (cap) previewCaption.innerHTML = `<small><center>${cap}</center></small>`;
+      };
+
+      // Default to first thumb if it exists
+      setPreview(thumbs[0]);
+
+      thumbs.forEach(img => {
+        img.addEventListener("mouseenter", () => setPreview(img));
+        img.addEventListener("focus", () => setPreview(img));
+        img.addEventListener("touchstart", () => setPreview(img), {passive:true});
+      });
+    })();
+
   </script>
 </body>
 </html>

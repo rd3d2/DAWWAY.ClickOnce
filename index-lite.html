@@ -1,435 +1,369 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-GB">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DAWWAY Lite - Download</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAWWAY Lite - Installation Configuration</title>
+  <meta name="description" content="Choose your DAW and control surface to open the correct setup guide and recommended MIDI routing, then continue to download DAWWAY Lite." />
+
   <style>
     :root{
-      --bg:#f5f5f5;
-      --card:#ffffff;
-      --text:#222;
-      --muted:#555;
-      --primary:#0078d4;
-      --primaryHover:#005a9e;
-      --success:#28a745;
-      --successHover:#218838;
-      --warningBg:#fff4ce;
-      --warningBorder:#f0ad4e;
-      --infoBg:#e8f4fc;
-      --infoBorder:#0078d4;
-      --border:#ddd;
-      --disabled:#9aa7b2;
-      --shadow:0 2px 10px rgba(0,0,0,0.10);
+      --bg: #07070a;
+      --bg2:#0d0e13;
+      --muted:#a7afc2;
+      --text:#eef1ff;
+      --gold:#d8b15b;
+      --gold2:#f6dd9b;
+      --line: rgba(255,255,255,.12);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 980px;
+
+      --ok: #59ff9f;
+      --warn: #ffdc50;
+      --danger: #ff5a5a;
     }
 
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 20px;
-      background: var(--bg);
-      color: var(--text);
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 520px at 50% -10%, rgba(216,177,91,.20), transparent 60%),
+        radial-gradient(900px 420px at 10% 10%, rgba(68, 188, 255, .08), transparent 60%),
+        radial-gradient(900px 420px at 90% 20%, rgba(112, 255, 186, .06), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      line-height:1.45;
+    }
+    a{ color:inherit; }
+
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:rgba(7,7,10,.65);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:12px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      font-weight:800;
+      letter-spacing:.3px;
+    }
+    .badge{
+      font-size:12px;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(216,177,91,.40);
+      background:rgba(216,177,91,.08);
+      color:var(--gold2);
+    }
+    .nav-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      font-size:14px;
+      color:var(--muted);
+    }
+    .nav-links a{
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid transparent;
+    }
+    .nav-links a:hover{
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-color: rgba(255,255,255,.06);
     }
 
-    .container{
-      background: var(--card);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
+    .wrap{ max-width:var(--max); margin:0 auto; padding:22px 20px 34px; }
+    .kicker{ color:var(--gold2); font-weight:800; letter-spacing:.12em; text-transform:uppercase; font-size:12px; }
+    h1{ margin:.35rem 0 .6rem; font-size: clamp(30px, 4vw, 44px); line-height:1.05; letter-spacing:-.02em; }
+    .sub{ font-size: clamp(15px, 1.6vw, 18px); color:var(--muted); margin:0 0 18px; }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:var(--radius2);
+      box-shadow:var(--shadow);
     }
 
-    h1{ margin: 0 0 5px; }
-    .subhead{ margin: 0 0 20px; color: var(--muted); }
+    .panel{ padding:18px; }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    @media (min-width: 860px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+      .full{ grid-column: 1 / -1; }
+    }
 
     .steps{
-      background: #f7fbff;
-      border: 1px solid #cfe8ff;
-      border-radius: 10px;
-      padding: 16px 18px;
-      margin: 18px 0 22px;
+      padding:16px 18px;
+      border-radius:var(--radius);
+      border:1px solid rgba(216,177,91,.25);
+      background: rgba(216,177,91,.07);
     }
     .steps strong{ display:block; margin-bottom:8px; }
-    .steps ol{ margin: 0 0 0 18px; padding: 0; }
+    .steps ol{ margin: 0 0 0 18px; padding:0; color:var(--muted); }
     .steps li{ margin: 6px 0; }
+    .hint{ margin:10px 0 0; color:var(--muted); font-size:13px; }
 
-    .btn-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin: 18px 0 10px;
+    label{ display:block; margin: 0 0 7px; font-weight:700; }
+    .select{
+      width:100%;
+      max-width: 440px;
+      padding: 12px 14px;
+      font-size: 15px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      color: var(--text);
+      outline:none;
     }
+    .select:focus{ border-color: rgba(216,177,91,.55); box-shadow: 0 0 0 4px rgba(216,177,91,.14); }
+    option{ color:#111; }
 
-    .download-btn{
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 14px; }
+    .cta{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:10px;
-      padding: 14px 20px;
-      background: var(--primary);
-      color: #fff;
       text-decoration:none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      border: 0;
-      cursor: pointer;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(216,177,91,.55);
+      background:linear-gradient(180deg, rgba(216,177,91,.22), rgba(216,177,91,.10));
+      box-shadow: 0 10px 30px rgba(216,177,91,.12);
+      font-weight:800;
+      cursor:pointer;
       user-select:none;
     }
-    .download-btn:hover{ background: var(--primaryHover); }
-
-    .download-btn.secondary{
-      background: #111827;
+    .cta:hover{ transform: translateY(-1px); transition:.15s ease; }
+    .cta.secondary{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      box-shadow:none;
+      font-weight:700;
+      color:var(--text);
     }
-    .download-btn.secondary:hover{
-      background: #0b1220;
-    }
-
-    /* Disabled "Install" button style */
-    .download-btn.disabled,
-    .download-btn:disabled{
-      background: var(--disabled);
-      cursor:not-allowed;
-      opacity:0.85;
+    .cta.disabled,
+    .cta:disabled{
+      opacity:.55;
       pointer-events:none;
-    }
-
-    /* Survey section */
-    .survey-section{
-      background: var(--infoBg);
-      padding: 22px;
-      border-radius: 10px;
-      margin: 20px 0;
-      border-left: 5px solid var(--infoBorder);
-    }
-    .survey-section h2{
-      margin: 0 0 6px;
-      color: var(--primary);
-      font-size: 20px;
-    }
-    .survey-section p{ margin: 8px 0; color: var(--muted); }
-
-    .survey-grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    .survey-row label{
-      display:block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .survey-select{
-      padding: 12px 14px;
-      font-size: 16px;
-      width: 100%;
-      max-width: 360px;
-      border: 2px solid #c9c9c9;
-      border-radius: 8px;
-      background: #fff;
-      cursor:pointer;
-    }
-    .survey-select:focus{
-      border-color: var(--primary);
-      outline:none;
-    }
-
-    .survey-actions{
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      gap:12px;
-      margin-top: 12px;
-    }
-
-    .survey-submit{
-      padding: 12px 18px;
-      background: var(--success);
-      color:#fff;
-      border:none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor:pointer;
-    }
-    .survey-submit:hover{ background: var(--successHover); }
-    .survey-submit:disabled{
-      background: #b9c3bb;
       cursor:not-allowed;
+      transform:none;
     }
 
-    .skip-link{
-      font-size: 14px;
-      color: var(--primary);
-      text-decoration: underline;
-      cursor:pointer;
-      background: transparent;
-      border: 0;
-      padding: 0;
-    }
-
-    .privacy-note{
+    .note{
       margin-top: 10px;
+      color:var(--muted);
       font-size: 13px;
-      color:#667085;
     }
-
-    .success-message{
+    .ok{
       display:none;
-      color: var(--success);
-      font-weight: 700;
       margin-top: 10px;
+      font-weight:800;
+      color: var(--ok);
     }
+    .divider{ height:1px; background:var(--line); margin: 14px 0 0; }
 
-    .requirements{
-      background: var(--warningBg);
-      padding: 16px 18px;
-      border-left: 5px solid var(--warningBorder);
-      border-radius: 10px;
-      margin: 20px 0;
-    }
-    .requirements h3{ margin:0 0 8px; }
-    .requirements ul{ margin: 0 0 0 18px; padding:0; }
-    .requirements li{ margin: 6px 0; }
-
-    h2.section-title{
-      margin-top: 26px;
-      margin-bottom: 8px;
-    }
-
-    .small-muted{ color: var(--muted); }
-
-    @media (min-width: 760px){
-      .survey-grid{
-        grid-template-columns: 1fr 1fr;
-      }
-      .survey-row.full{
-        grid-column: 1 / -1;
-      }
-    }
+    .mini-links{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; color:var(--muted); font-size: 14px; }
+    .mini-links a{ text-decoration:none; padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04); }
+    .mini-links a:hover{ background: rgba(255,255,255,.08); color:var(--text); }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>DAWWAY Lite</h1>
-    <p class="subhead">Professional Meter Bridge for Windows</p>
-
-    <div class="steps">
-      <strong>Installation steps</strong>
-      <ol>
-        <li>Complete the installation configuration (30 seconds)</li>
-        <li>Open the correct setup guide for your DAW</li>
-        <li>Install DAWWAY Lite</li>
-      </ol>
-      <p class="small-muted" style="margin:10px 0 0;">
-        This reduces common MIDI-routing issues and gets you running faster.
-      </p>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="DAWWAY.html" aria-label="DAWWAY Lite home">
+        DAWWAY <span class="badge">Lite</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index-lite.html" aria-current="page">Installation configuration</a>
+        <a href="index.html">Download</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- CONFIGURATION (formerly "survey") -->
-    <div class="survey-section" id="config">
-      <h2>🛠 Installation Configuration</h2>
-      <p>
-        Tell us your DAW and control surface so we can route you to the correct setup guide and recommended MIDI routing.
-      </p>
+  <main class="wrap">
+    <div class="kicker">Installation</div>
+    <h1>Installation Configuration</h1>
+    <p class="sub">Pick your DAW and control surface to open the correct setup guide and recommended MIDI routing.</p>
 
-      <div class="survey-grid">
-        <!-- DAW Selection -->
-        <div class="survey-row">
-          <label for="dawSelect">Which DAW are you using?</label>
-          <select id="dawSelect" class="survey-select">
-            <option value="">-- Select your DAW --</option>
-            <option value="Ableton" data-forum="f5-getting-dawway-working-with-ableton">Ableton</option>
-            <option value="Ardour" data-forum="f25-getting-dawway-working-with-ardour">Ardour</option>
-            <option value="Bitwig" data-forum="f9-getting-dawway-working-with-bitwig">Bitwig</option>
-            <option value="Cubase / Nuendo" data-forum="f13-getting-dawway-working-with-cubase-and-nuendo">Cubase / Nuendo</option>
-            <option value="Logic" data-forum="f30-getting-dawway-working-with-logic">Logic</option>
-            <option value="Luna" data-forum="f27-getting-dawway-working-with-luna">Luna</option>
-            <option value="FL Studio" data-forum="f17-getting-dawway-working-with-fl-studio">FL Studio</option>
-            <option value="Mixcraft" data-forum="">Mixcraft</option>
-            <option value="Reaper" data-forum="f28-getting-dawway-working-with-reaper">Reaper</option>
-            <option value="Reason" data-forum="f29-getting-dawway-working-with-reason">Reason</option>
-            <option value="Studio One" data-forum="f21-getting-dawway-working-with-studio-one">Studio One</option>
-            <option value="Other" data-forum="">Other</option>
-          </select>
+    <div class="card">
+      <div class="panel">
+        <div class="steps">
+          <strong>Installation steps</strong>
+          <ol>
+            <li>Complete the installation configuration (30 seconds)</li>
+            <li>Open the correct setup guide for your DAW</li>
+            <li>Install DAWWAY Lite</li>
+          </ol>
+          <p class="hint">This reduces common MIDI-routing issues and gets you running faster.</p>
         </div>
 
-        <!-- Control Surface Selection -->
-        <div class="survey-row">
-          <label for="surfaceSelect">Which Control Surface are you using?</label>
-          <select id="surfaceSelect" class="survey-select">
-            <option value="">-- Select your Control Surface --</option>
-            <option value="AVID - Artist Mix">AVID - Artist Mix</option>
-            <option value="AVID - Artist Control">AVID - Artist Control</option>
-            <option value="Behringer - BCF2000">Behringer - BCF2000</option>
-            <option value="Behringer - X-TOUCH">Behringer - X-TOUCH</option>
-            <option value="Behringer - X-TOUCH COMPACT">Behringer - X-TOUCH COMPACT</option>
-            <option value="Behringer - X-TOUCH MINI">Behringer - X-TOUCH MINI</option>
-            <option value="Behringer - X-TOUCH ONE">Behringer - X-TOUCH ONE</option>
-            <option value="Behringer - Wing">Behringer - Wing</option>
-            <option value="Emagic - Logic Control">Emagic - Logic Control</option>
-            <option value="Euphonix - MC Mix">Euphonix - MC Mix</option>
-            <option value="Euphonix MC Control">Euphonix MC Control</option>
-            <option value="Euphonix - System 5">Euphonix - System 5</option>
-            <option value="Frontier Design - AlphaTrack">Frontier Design - AlphaTrack</option>
-            <option value="iCON - Platform M+">iCON - Platform M+</option>
-            <option value="iCON - Platform X+">iCON - Platform X+</option>
-            <option value="iCON - QCon Pro">iCON - QCon Pro</option>
-            <option value="iCON - QCon Pro G2">iCON - QCon Pro G2</option>
-            <option value="iCON - QCon Pro X">iCON - QCon Pro X</option>
-            <option value="iCON - QCon Pro XS">iCON - QCon Pro XS</option>
-            <option value="iCON - P1-Nano">iCON - P1-Nano</option>
-            <option value="iCON - V1-M">iCON - V1-M</option>
-            <option value="iCON - V1-X">iCON - V1-X</option>
-            <option value="Korg - nanoKONTROL2">Korg - nanoKONTROL2</option>
-            <option value="M-Audio - ProjectMix I/O">M-Audio - ProjectMix I/O</option>
-            <option value="Mackie d8b (emulation)">Mackie d8b (emulation)</option>
-            <option value="Mackie - MCU Pro">Mackie - MCU Pro</option>
-            <option value="Mackie - MCU XT Pro">Mackie - MCU XT Pro</option>
-            <option value="Mackie - Mackie Control">Mackie - Mackie Control</option>
-            <option value="Mackie - Mackie Control Universal">Mackie - Mackie Control Universal</option>
-            <option value="Mackie - Mackie Control Universal Pro">Mackie - Mackie Control Universal Pro</option>
-            <option value="PreSonus - FaderPort">PreSonus - FaderPort</option>
-            <option value="PreSonus - FaderPort 8">PreSonus - FaderPort 8</option>
-            <option value="PreSonus - FaderPort 16">PreSonus - FaderPort 16</option>
-            <option value="Roland - VS700c">Roland - VS700c</option>
-            <option value="Solid State Logic - Nucleus">Solid State Logic - Nucleus</option>
-            <option value="Solid State Logic - Nucleus 2">Solid State Logic - Nucleus 2</option>
-            <option value="Solid State Logic - UF1">Solid State Logic - UF1</option>
-            <option value="Solid State Logic - UF8">Solid State Logic - UF8</option>
-            <option value="Steinberg - CMC">Steinberg - CMC</option>
-            <option value="Tascam - FW-1082">Tascam - FW-1082</option>
-            <option value="Tascam - FW-1884">Tascam - FW-1884</option>
-            <option value="Tascam - US-2400">Tascam - US-2400</option>
-            <option value="Yamaha - 01X">Yamaha - 01X</option>
-            <option value="OTHER">OTHER</option>
-          </select>
+        <div class="divider"></div>
+
+        <div class="grid" style="margin-top:14px;">
+          <div>
+            <label for="dawSelect">Which DAW are you using?</label>
+            <select id="dawSelect" class="select">
+              <option value="">-- Select your DAW --</option>
+              <option value="Ableton" data-forum="f5-getting-dawway-working-with-ableton">Ableton</option>
+              <option value="Ardour" data-forum="f25-getting-dawway-working-with-ardour">Ardour</option>
+              <option value="Bitwig" data-forum="f9-getting-dawway-working-with-bitwig">Bitwig</option>
+              <option value="Cubase / Nuendo" data-forum="f13-getting-dawway-working-with-cubase-and-nuendo">Cubase / Nuendo</option>
+              <option value="Logic" data-forum="f30-getting-dawway-working-with-logic">Logic</option>
+              <option value="Luna" data-forum="f27-getting-dawway-working-with-luna">Luna</option>
+              <option value="FL Studio" data-forum="f17-getting-dawway-working-with-fl-studio">FL Studio</option>
+              <option value="Mixcraft" data-forum="">Mixcraft</option>
+              <option value="Reaper" data-forum="f28-getting-dawway-working-with-reaper">Reaper</option>
+              <option value="Reason" data-forum="f29-getting-dawway-working-with-reason">Reason</option>
+              <option value="Studio One" data-forum="f21-getting-dawway-working-with-studio-one">Studio One</option>
+              <option value="Other" data-forum="">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="surfaceSelect">Which Control Surface are you using?</label>
+            <select id="surfaceSelect" class="select">
+              <option value="">-- Select your Control Surface --</option>
+              <option value="AVID - Artist Mix">AVID - Artist Mix</option>
+              <option value="AVID - Artist Control">AVID - Artist Control</option>
+              <option value="Behringer - BCF2000">Behringer - BCF2000</option>
+              <option value="Behringer - X-TOUCH">Behringer - X-TOUCH</option>
+              <option value="Behringer - X-TOUCH COMPACT">Behringer - X-TOUCH COMPACT</option>
+              <option value="Behringer - X-TOUCH MINI">Behringer - X-TOUCH MINI</option>
+              <option value="Behringer - X-TOUCH ONE">Behringer - X-TOUCH ONE</option>
+              <option value="Behringer - Wing">Behringer - Wing</option>
+              <option value="Emagic - Logic Control">Emagic - Logic Control</option>
+              <option value="Euphonix - MC Mix">Euphonix - MC Mix</option>
+              <option value="Euphonix MC Control">Euphonix MC Control</option>
+              <option value="Euphonix - System 5">Euphonix - System 5</option>
+              <option value="Frontier Design - AlphaTrack">Frontier Design - AlphaTrack</option>
+              <option value="iCON - Platform M+">iCON - Platform M+</option>
+              <option value="iCON - Platform X+">iCON - Platform X+</option>
+              <option value="iCON - QCon Pro">iCON - QCon Pro</option>
+              <option value="iCON - QCon Pro G2">iCON - QCon Pro G2</option>
+              <option value="iCON - QCon Pro X">iCON - QCon Pro X</option>
+              <option value="iCON - QCon Pro XS">iCON - QCon Pro XS</option>
+              <option value="iCON - P1-Nano">iCON - P1-Nano</option>
+              <option value="iCON - V1-M">iCON - V1-M</option>
+              <option value="iCON - V1-X">iCON - V1-X</option>
+              <option value="Korg - nanoKONTROL2">Korg - nanoKONTROL2</option>
+              <option value="M-Audio - ProjectMix I/O">M-Audio - ProjectMix I/O</option>
+              <option value="Mackie d8b (emulation)">Mackie d8b (emulation)</option>
+              <option value="Mackie - MCU Pro">Mackie - MCU Pro</option>
+              <option value="Mackie - MCU XT Pro">Mackie - MCU XT Pro</option>
+              <option value="Mackie - Mackie Control">Mackie - Mackie Control</option>
+              <option value="Mackie - Mackie Control Universal">Mackie - Mackie Control Universal</option>
+              <option value="Mackie - Mackie Control Universal Pro">Mackie - Mackie Control Universal Pro</option>
+              <option value="PreSonus - FaderPort">PreSonus - FaderPort</option>
+              <option value="PreSonus - FaderPort 8">PreSonus - FaderPort 8</option>
+              <option value="PreSonus - FaderPort 16">PreSonus - FaderPort 16</option>
+              <option value="Roland - VS700c">Roland - VS700c</option>
+              <option value="Solid State Logic - Nucleus">Solid State Logic - Nucleus</option>
+              <option value="Solid State Logic - Nucleus 2">Solid State Logic - Nucleus 2</option>
+              <option value="Solid State Logic - UF1">Solid State Logic - UF1</option>
+              <option value="Solid State Logic - UF8">Solid State Logic - UF8</option>
+              <option value="Steinberg - CMC">Steinberg - CMC</option>
+              <option value="Tascam - FW-1082">Tascam - FW-1082</option>
+              <option value="Tascam - FW-1884">Tascam - FW-1884</option>
+              <option value="Tascam - US-2400">Tascam - US-2400</option>
+              <option value="Yamaha - 01X">Yamaha - 01X</option>
+              <option value="OTHER">OTHER</option>
+            </select>
+          </div>
+
+          <div class="full">
+            <label for="extenderSelect">How many extenders do you have?</label>
+            <select id="extenderSelect" class="select" style="max-width:180px;">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
         </div>
 
-        <!-- Extender Count -->
-        <div class="survey-row full">
-          <label for="extenderSelect">How many extenders do you have?</label>
-          <select id="extenderSelect" class="survey-select" style="max-width:160px;">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
+        <div class="actions">
+          <button id="surveySubmit" class="cta disabled" onclick="submitConfiguration()" disabled>
+            Configure &amp; Continue →
+          </button>
+
+          <button class="cta secondary" type="button" onclick="skipConfiguration()">
+            Skip configuration
+          </button>
+
+          <a id="continueBtn" class="cta secondary disabled" href="index.html" aria-disabled="true">
+            Continue to download
+          </a>
+        </div>
+
+        <div id="successMessage" class="ok">✓ Configuration saved. Opening your setup guide…</div>
+        <div class="note">Used only to improve setup guidance and compatibility. No personal data is collected.</div>
+
+        <div class="mini-links" aria-label="Quick links">
+          <a href="index.html">Go to download page</a>
+          <a href="DAWWAY.html">Back to the main page</a>
         </div>
       </div>
-
-      <div class="survey-actions">
-        <button id="surveySubmit" class="survey-submit" onclick="submitConfiguration()" disabled>
-          Configure &amp; Continue →
-        </button>
-
-        <!-- Optional: allow user to proceed without config (soft-gate, not hard block) -->
-        <button class="skip-link" onclick="skipConfiguration()" type="button">
-          Skip configuration
-        </button>
-      </div>
-
-      <p id="successMessage" class="success-message">✓ Configuration saved. Opening your setup guide…</p>
-      <p class="privacy-note">
-        Used only to improve setup guidance and compatibility. No personal data is collected.
-      </p>
     </div>
-
-    <!-- INSTALL / LICENSE -->
-    <div class="btn-row">
-      <a
-        id="installBtn"
-        href="https://rd3d2.github.io/DAWWAY.ClickOnce/online-lite/DAWWAY%20Lite.application"
-        class="download-btn disabled"
-        aria-disabled="true"
-        title="Complete configuration above to enable install"
-      >
-        🚀 Install DAWWAY Lite
-      </a>
-
-      <a
-        href="https://dawway.lemonsqueezy.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="download-btn secondary"
-      >
-        🔑 Get a DAWWAY licence
-      </a>
-    </div>
-
-    <div class="requirements">
-      <h3>⚠️ Requirements</h3>
-      <ul>
-        <li>Windows 10 or later (latest Windows 11 builds recommended)</li>
-        <li>.NET 8 Desktop Runtime (auto-installed if needed)</li>
-        <li>A virtual MIDI loopback driver</li>
-        <li>MIDI devices connected (or virtual ports configured)</li>
-      </ul>
-    </div>
-
-    <h2 class="section-title">DAW Compatibility</h2>
-    <ul>
-      <li>✅ Ableton</li>
-      <li>❌ Ardour (additional testing required)</li>
-      <li>✅ Bitwig</li>
-      <li>✅ Cubase / Nuendo</li>
-      <li>❌ Logic (awaiting tests with RPT Midi)</li>
-      <li>✅ Luna</li>
-      <li>✅ FL Studio</li>
-      <li>✅ Mixcraft</li>
-      <li>✅ Reaper</li>
-      <li>✅ Reason</li>
-      <li>✅ Studio One</li>
-    </ul>
-
-    <h2 class="section-title">Features</h2>
-    <ul>
-      <li>✅ Custom-sized meter bridge for each control surface / extender</li>
-      <li>✅ Lifetime licence</li>
-      <li>✅ MIDI 2.0 compatible</li>
-      <li>✅ Common industry standards compatible</li>
-      <li>✅ MIDI routing &amp; bank management</li>
-      <li>✅ Automatic updates via ClickOnce</li>
-    </ul>
-  </div>
+  </main>
 
   <!-- Hidden iframe for Google Form submission -->
-  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
 
   <script>
+    const DOWNLOAD_PAGE_URL = 'index.html';
+    const FORUM_BASE = 'https://dawway.forumotion.com/';
+
     const dawSelect = document.getElementById('dawSelect');
     const surfaceSelect = document.getElementById('surfaceSelect');
     const extenderSelect = document.getElementById('extenderSelect');
     const submitBtn = document.getElementById('surveySubmit');
     const successMessage = document.getElementById('successMessage');
-    const installBtn = document.getElementById('installBtn');
+    const continueBtn = document.getElementById('continueBtn');
 
-    // Enable submit button when DAW and Control Surface are selected
     function checkFormValidity() {
-      submitBtn.disabled = !(dawSelect.value && surfaceSelect.value);
+      const ok = !!(dawSelect.value && surfaceSelect.value);
+      submitBtn.disabled = !ok;
+      submitBtn.classList.toggle('disabled', !ok);
     }
-
     dawSelect.addEventListener('change', checkFormValidity);
     surfaceSelect.addEventListener('change', checkFormValidity);
 
-    function enableInstall() {
-      installBtn.classList.remove('disabled');
-      installBtn.removeAttribute('aria-disabled');
-      installBtn.title = 'Install DAWWAY V2';
+    function enableContinue() {
+      continueBtn.classList.remove('disabled');
+      continueBtn.removeAttribute('aria-disabled');
+      continueBtn.href = DOWNLOAD_PAGE_URL;
     }
 
     function skipConfiguration() {
-      // Soft-gate: allow install without config
-      enableInstall();
-      // Optional: scroll user to install buttons
-      installBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      enableContinue();
+      window.location.href = DOWNLOAD_PAGE_URL;
     }
 
     function submitConfiguration() {
@@ -444,13 +378,13 @@
       }
 
       submitBtn.disabled = true;
+      submitBtn.classList.add('disabled');
       submitBtn.textContent = 'Saving...';
       successMessage.style.display = 'block';
 
-      // Submit to Google Form (same as your original)
+      // Submit to Google Form (unchanged)
       const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeaB9vAqq40RWI4bxXrnNIerLV6klmycpi0bX9MO1IA63OTYQ/formResponse';
 
-      // Create a hidden form to submit
       const form = document.createElement('form');
       form.method = 'POST';
       form.action = formUrl;
@@ -481,17 +415,15 @@
       form.submit();
       document.body.removeChild(form);
 
-      // Enable installation once config is saved
-      enableInstall();
+      enableContinue();
 
-      // Redirect to forum guide (if available), then nudge toward install
+      // Open setup guide (if available), then move to the download page
       setTimeout(() => {
         if (forumPath) {
-          window.open('https://dawway.forumotion.com/' + forumPath, '_blank');
+          window.open(FORUM_BASE + forumPath, '_blank', 'noopener');
         }
         submitBtn.textContent = 'Saved ✓';
-        // scroll user to install button after guide opens
-        installBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        window.location.href = DOWNLOAD_PAGE_URL;
       }, 800);
     }
   </script>
