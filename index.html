@@ -330,6 +330,66 @@
       color:var(--muted);
     }
     .pill:hover{ color:var(--text) }
+    /* --- Founder story: framed, readable, and consistent with the page --- */
+    .founder-story{
+      margin-top: 22px;
+      padding: 18px;
+    }
+    /* Slightly darker than other cards (matches the simple, clean screenshot feel) */
+    .card.founder-story{
+      background: #000;
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+    }
+    .founder-story-inner{
+      max-width: 86ch;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .founder-story .story{
+      color: rgba(238,241,255,.88);
+      font-size: clamp(15px, 1.2vw, 17px);
+      line-height: 1.9;
+      text-wrap: pretty;
+      margin: 0;
+    }
+    .founder-story .story + .story{ margin-top: 16px; }
+    .founder-story .soidid{
+      margin-top: 18px;
+      font-weight: 900;
+      letter-spacing: .03em;
+      color: var(--text);
+      font-size: clamp(16px, 1.3vw, 18px);
+          margin-bottom: 10px;
+    }
+
+    /* Shared list style for "tested on" */
+    .tested{
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .daw-list{
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 8px 18px;
+    }
+    .daw-list li{
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(238,241,255,.92);
+      font-size: 14px;
+    }
+    @media (max-width: 520px){
+      .daw-list{ grid-template-columns: 1fr; }
+    }
+
+
   </style>
 </head>
 
@@ -393,7 +453,54 @@
         </div>
       </div>
     </div>
+    <br/><br/>
+
+    <div class="card founder-story" aria-label="Founder story">
+      <div class="founder-story-inner">
+        <p class="story">
+          <i>"I used to play in bands back in the 80s, and after I retired from computer programming I got back into writing and recording.   
+          I found Modern DAWs to be incredible, but once I started using a control surface seriously, I hit a constant annoyance: my hands were on the faders,
+          but my eyes had to keep jumping to the computer screen to see what the DAW was showing. I knew that there had to be a better software solution.
+
+          I asked around - even spoke to DAW and control surface manufacturers - and everyone liked the idea, but nobody was building it."</i>
+        </p>
+
+        <div class="soidid">So I did.</div>
+      </div>
+    </div>
+
+<br/><br/>
   </header>
+  <section class="wrap">
+    <div class="section-title">
+      <h2>What DAWWAY Lite does</h2>
+      <div class="hint">A dedicated, always-visible meter bridge designed for control-surface workflows.</div>
+    </div>
+
+    <div class="card" style="padding:16px;">
+      <p style="margin:0; color:var(--muted); font-size:15px; line-height:1.7;">
+        DAWWAY is a dedicated, always-visible meter bridge for your DAW and your Control Surface: it brings the essential mixer information into the same place
+        as your control-surface workflow - so you make faster decisions, stay in the creative flow, have more control, and your setup feels more like a real console.
+        And this isn’t my first try - it’s the fourth iteration, built from real use, getting closer to the vision… and then going beyond it.
+      </p>
+
+      <div class="tested">DAWWAY is designed to run on all DAWs and has been tested on:</div>
+
+      <ul class="daw-list">
+        <li>Ableton</li>
+        <li>Acoustica Mixcraft</li>
+        <li>Bitwig</li>
+        <li>Cakewalk / Sonar</li>
+        <li>Cubase / Nuendo</li>
+        <li>FL Studio</li>
+        <li>MOTU Digital Performer</li>
+        <li>Reaper</li>
+        <li>Reason</li>
+        <li>Studio One</li>
+      </ul>
+    </div>
+  </section>
+
 
   <section class="wrap">
     <div class="section-title">
@@ -477,12 +584,13 @@
       <div class="card steps">
         <b>Three steps:</b>
         <ol>
-          <li><b>Connect DAWWAY</b>  in your DAW.</li>
+          <li><b>Connect DAWWAY</b> ports in your DAW. *</li>
           <li><b>Run DAWWAY Lite</b> and choose your surface & extenders.</li>
-          <li><b>Place the windows</b> on any monitor (or touchscreen) at your eyeline.</li>
+          <li><b>Place the Fader Bank windows</b> on any monitor (or touchscreen) at your eyeline and directly above your individual Control Surface Channels</li>
+       
         </ol>
         <p style="margin:12px 0 0; color:var(--muted);">
-          From then on it’s <b style="color:var(--text);">setup once, launch and go</b>.
+          <small>From then on it’s <b style="color:var(--text);">setup once, launch and go</b>.</p><br/>* <i>Note that if Windows Midi Services 2.0 is not released at NAMM 2026 you will first need to setup virtual midi ports for DAWWAY to use.  Full instructions will be provided in the support forum.</i></small>
         </p>
       </div>
 
@@ -614,12 +722,12 @@
           <tr><td>Flexible external monitor(s)</td><td class="yes">✅</td><td class="yes">✅</td></tr>
           <tr><td>Fully customisable UI</td><td class="yes">✅</td><td class="yes">✅</td></tr>
           <tr><td>Native touchscreen support</td><td class="yes">✅</td><td class="yes">✅</td></tr>
-          <tr><td><b>Track text / track labels</b></td><td class="no">—</td><td class="pro">✅ Pro</td></tr>
-          <tr><td><b>Analogue meters</b></td><td class="no">—</td><td class="pro">✅ Pro</td></tr>
-          <tr><td><b>Theming</b></td><td class="no">—</td><td class="pro">✅ Pro</td></tr>
-          <tr><td><b>DAW Dependent new Functionality</b></td><td class="no">—</td><td class="pro">✅ Pro</td></tr>
+          <tr><td><b>Track text / track labels</b></td><td class="no">-</td><td class="pro">✅ Pro</td></tr>
+          <tr><td><b>Analogue meters</b></td><td class="no">-</td><td class="pro">✅ Pro</td></tr>
+          <tr><td><b>Theming</b></td><td class="no">-</td><td class="pro">✅ Pro</td></tr>
+          <tr><td><b>DAW Dependent new Functionality</b></td><td class="no">-</td><td class="pro">✅ Pro</td></tr>
           <tr><td><b>Availability</b></td><td class="pro">Now</td><td class="pro">✅ 3 Months</td></tr>
-            <!--<br/>EG:<br/>...   Long Track Names<br/>... Button based "Jump to Marker"<br/>... Automatic Track Numbering etc</b></td><td class="no">—</td><td class="pro">✅ Pro-->
+            <!--<br/>EG:<br/>...   Long Track Names<br/>... Button based "Jump to Marker"<br/>... Automatic Track Numbering etc</b></td><td class="no">-</td><td class="pro">✅ Pro-->
         </tbody>
       </table>
     </div>
