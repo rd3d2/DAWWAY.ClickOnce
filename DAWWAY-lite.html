@@ -193,6 +193,17 @@
 
     .cta.small{ padding:10px 14px; font-size:14px; border-radius:12px; }
     .support-row{ display:none; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+    .extender-note{
+      display:none;
+      margin-top:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,220,80,.30);
+      background: rgba(255,220,80,.08);
+      color:var(--muted);
+      font-size:14px;
+    }
+    .extender-note strong{ color:var(--text); }
   </style>
 </head>
 
@@ -309,6 +320,9 @@
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
+            <div id="extenderUpgradeNote" class="extender-note">
+              <strong>Using extenders?</strong> Register (free) to unlock an upgrade that works with a control surface and up to 2 extenders.
+            </div>
           </div>
         </div>
 
@@ -347,6 +361,7 @@
     const extenderSelect = document.getElementById('extenderSelect');
     const submitBtn = document.getElementById('surveySubmit');
     const successMessage = document.getElementById('successMessage');
+    const extenderUpgradeNote = document.getElementById('extenderUpgradeNote');
 
     const supportRow = document.getElementById('supportRow');
     const supportLinkBtn = document.getElementById('supportLinkBtn');
@@ -381,12 +396,21 @@
       setDownloadEnabled(ok);
     }
 
+
+    function updateExtenderNote() {
+      if (!extenderUpgradeNote) return;
+      const n = parseInt(extenderSelect.value || '0', 10);
+      extenderUpgradeNote.style.display = (n > 0) ? 'block' : 'none';
+    }
+
     dawSelect.addEventListener('change', checkFormValidity);
     dawSelect.addEventListener('change', () => { if (dawSelect.value) showSupportLink(); });
     surfaceSelect.addEventListener('change', checkFormValidity);
+    extenderSelect.addEventListener('change', updateExtenderNote);
 
     // In case the browser restores form state from cache
     checkFormValidity();
+    updateExtenderNote();
 
     function startDownload() {
       // Best effort: try a new tab (keeps this page visible). If blocked, fall back to same-tab navigation.
