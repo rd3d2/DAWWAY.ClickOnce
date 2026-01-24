@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAWWAY Support - Choose Your DAW</title>
+  <meta name="description" content="Select your DAW to open the dedicated DAWWAY support forum." />
+  <link rel="icon" href="favicon.ico" sizes="any">
+
+  <style>
+    :root{
+      --bg: #07070a;
+      --bg2:#0d0e13;
+      --muted:#a7afc2;
+      --text:#eef1ff;
+      --gold:#d8b15b;
+      --gold2:#f6dd9b;
+      --line: rgba(255,255,255,.12);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 980px;
+
+      --ok: #59ff9f;
+      --warn: #ffdc50;
+      --danger: #ff5a5a;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 520px at 50% -10%, rgba(216,177,91,.20), transparent 60%),
+        radial-gradient(900px 420px at 10% 10%, rgba(68, 188, 255, .08), transparent 60%),
+        radial-gradient(900px 420px at 90% 20%, rgba(112, 255, 186, .06), transparent 60%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      line-height:1.45;
+    }
+    a{ color:inherit; }
+
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:rgba(7,7,10,.65);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:12px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      font-weight:800;
+      letter-spacing:.3px;
+    }
+    .badge{
+      font-size:12px;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(216,177,91,.40);
+      background:rgba(216,177,91,.08);
+      color:var(--gold2);
+    }
+    .nav-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      font-size:14px;
+      color:var(--muted);
+    }
+    .nav-links a{
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid transparent;
+    }
+    .nav-links a:hover{
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-color: rgba(255,255,255,.06);
+    }
+
+    .wrap{ max-width:var(--max); margin:0 auto; padding:22px 20px 34px; }
+    .kicker{ color:var(--gold2); font-weight:800; letter-spacing:.12em; text-transform:uppercase; font-size:12px; }
+    h1{ margin:.35rem 0 .6rem; font-size: clamp(30px, 4vw, 44px); line-height:1.05; letter-spacing:-.02em; }
+    .sub{ font-size: clamp(15px, 1.6vw, 18px); color:var(--muted); margin:0 0 18px; }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:var(--radius2);
+      box-shadow:var(--shadow);
+    }
+    .panel{ padding:18px; }
+
+    .toolbar{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:14px;
+    }
+
+    .input{
+      width:100%;
+      max-width: 520px;
+      padding: 12px 14px;
+      font-size: 15px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      color: var(--text);
+      outline:none;
+    }
+    .input:focus{ border-color: rgba(216,177,91,.55); box-shadow: 0 0 0 4px rgba(216,177,91,.14); }
+
+    .pill{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+      margin-top: 14px;
+    }
+    @media (min-width: 760px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .daw-card{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .daw-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .daw-name{
+      font-weight: 900;
+      letter-spacing: -.01em;
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .daw-meta{
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      text-decoration:none;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(216,177,91,.55);
+      background:linear-gradient(180deg, rgba(216,177,91,.22), rgba(216,177,91,.10));
+      box-shadow: 0 10px 30px rgba(216,177,91,.12);
+      font-weight:800;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .cta:hover{ transform: translateY(-1px); transition:.15s ease; }
+
+    .cta.secondary{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      box-shadow:none;
+      font-weight:700;
+      color:var(--text);
+    }
+
+    .mini-links{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; color:var(--muted); font-size: 14px; }
+    .mini-links a{ text-decoration:none; padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04); }
+    .mini-links a:hover{ background: rgba(255,255,255,.08); color:var(--text); }
+
+    .divider{ height:1px; background:var(--line); margin: 14px 0 0; }
+
+    .empty{
+      display:none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      color: var(--muted);
+    }
+    .empty strong{ color: var(--text); }
+  </style>
+</head>
+
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="DAWWAY.html" aria-label="DAWWAY Lite home">
+        DAWWAY <span class="badge">Support</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="support-links.html" aria-current="page">Support links</a>
+        <a href="index-lite.html">Installation configuration</a>
+        <a href="index.html">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="kicker">Support</div>
+    <h1>DAWWAY Support Forums</h1>
+    <p class="sub">Select your DAW from the list to be taken to the dedicated support forum for DAWWAY.</p>
+
+    <div class="card">
+      <div class="panel">
+        <div class="toolbar">
+          <input id="filter" class="input" type="text" placeholder="Search DAWs (e.g. Reaper, Cubase, FL Studio)..." autocomplete="off" />
+          <div class="pill" id="countPill">0 DAWs</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div id="grid" class="grid" aria-label="DAW support links"></div>
+
+        <div id="empty" class="empty">
+          <strong>No matches.</strong> Try a different search, or use <a href="https://dawway.forumotion.com/" target="_blank" rel="noopener">General Support</a>.
+        </div>
+
+        <div class="mini-links" aria-label="Quick links">
+          <a href="https://dawway.forumotion.com/" target="_blank" rel="noopener">General support home</a>
+          <a href="index-lite.html">Back to installation configuration</a>
+          <a href="DAWWAY.html">Back to the main page</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // DAW -> forum slugs copied from your DAWWAY-lite.html select options. (Empty slug => general forum home)
+    const BASE = "https://dawway.forumotion.com/";
+    const DAWS = [
+      { name: "Ableton",          slug: "f5-getting-dawway-working-with-ableton" },
+      { name: "Ardour",           slug: "f25-getting-dawway-working-with-ardour" },
+      { name: "Bitwig",           slug: "f9-getting-dawway-working-with-bitwig" },
+      { name: "Cubase / Nuendo",  slug: "f13-getting-dawway-working-with-cubase-and-nuendo" },
+      { name: "Logic",            slug: "f30-getting-dawway-working-with-logic" },
+      { name: "Luna",             slug: "f27-getting-dawway-working-with-luna" },
+      { name: "FL Studio",        slug: "f17-getting-dawway-working-with-fl-studio" },
+      { name: "Mixcraft",         slug: "" },
+      { name: "Reaper",           slug: "f28-getting-dawway-working-with-reaper" },
+      { name: "Reason",           slug: "f29-getting-dawway-working-with-reason" },
+      { name: "Studio One",       slug: "f21-getting-dawway-working-with-studio-one" },
+      { name: "Other",            slug: "" },
+    ];
+
+    const grid = document.getElementById("grid");
+    const filter = document.getElementById("filter");
+    const empty = document.getElementById("empty");
+    const countPill = document.getElementById("countPill");
+
+    function forumUrl(d) {
+      return d.slug ? (BASE + d.slug) : BASE;
+    }
+
+    function hintText(d) {
+      return d.slug
+        ? "Dedicated DAW support forum"
+        : "General support forum (no DAW-specific area yet)";
+    }
+
+    function render(list) {
+      grid.innerHTML = "";
+
+      list.forEach(d => {
+        const url = forumUrl(d);
+        const dedicated = !!d.slug;
+
+        const card = document.createElement("div");
+        card.className = "daw-card";
+
+        card.innerHTML = `
+          <div class="daw-top">
+            <div>
+              <div class="daw-name">${escapeHtml(d.name)}</div>
+              <div class="daw-meta">${hintText(d)}</div>
+            </div>
+            <div class="pill">${dedicated ? "Dedicated" : "General"}</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="cta" href="${url}" target="_blank" rel="noopener">
+              Open support for ${escapeHtml(d.name)}
+            </a>
+            <a class="cta secondary" href="${BASE}" target="_blank" rel="noopener">
+              General Support
+            </a>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      countPill.textContent = `${list.length} DAW${list.length === 1 ? "" : "s"}`;
+      empty.style.display = list.length ? "none" : "block";
+    }
+
+    function applyFilter() {
+      const q = (filter.value || "").trim().toLowerCase();
+      if (!q) return render(DAWS);
+      render(DAWS.filter(d => d.name.toLowerCase().includes(q)));
+    }
+
+    // Minimal escaping to avoid issues if names change later.
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    filter.addEventListener("input", applyFilter);
+    render(DAWS);
+  </script>
+</body>
+</html>
