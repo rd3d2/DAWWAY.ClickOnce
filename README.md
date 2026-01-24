@@ -1,2 +1,2 @@
 # DAWWAY.ClickOnce
-Home of the Click Once deployment of DAWWWAY
+Home of the Click Once deployment of DAWWWAY.
